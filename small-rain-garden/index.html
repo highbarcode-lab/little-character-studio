@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>작은 비의 정원 · A Small Rain Garden</title>
+<style>
+:root{color-scheme:light;--ink:#263c35;--paper:#f8f5eb;--line:#9bafa2;--green:#35654b}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:system-ui,sans-serif;line-height:1.6}main{max-width:560px;margin:auto;padding:24px 14px 36px}h1{font-size:clamp(25px,6vw,34px);line-height:1.25;margin:8px 0}p{margin:8px 0}.eyebrow{font-size:13px;letter-spacing:.08em}button{font:inherit;color:inherit;border:1px solid var(--line);border-radius:12px;background:#fffdf6;padding:9px 13px;cursor:pointer;min-height:44px}button:disabled{cursor:default;opacity:.55}button:focus-visible,summary:focus-visible{outline:3px solid #9c4b21;outline-offset:3px}nav,.actions{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}nav button[aria-pressed=true]{background:var(--green);color:white;border-color:var(--green)}.garden{padding:16px 10px;border:1px solid var(--line);border-radius:20px;background:#e9efde}.stage-title{text-align:center;font-weight:700}.stats{display:flex;justify-content:center;gap:15px;flex-wrap:wrap;font-variant-numeric:tabular-nums;font-size:15px;margin:8px 0 14px}.board{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;width:min(100%,350px);margin:auto}.cell{position:relative;aspect-ratio:1;min-width:0;min-height:0;padding:0;border-radius:10px;background:#f6faed;overflow:visible}.cell.rock{background:#dde1d4;opacity:1}.cell.cloud{border:2px solid #48728c;background:#e4f2f4}.cell svg{position:absolute;width:72%;height:72%;left:14%;top:14%;pointer-events:none}.cell.cloud .plant{width:48%;height:48%;left:42%;top:49%}.cell .cloud-icon{width:74%;height:65%;left:7%;top:1%}.cell .soil{width:24%;height:10%;left:38%;top:68%}.message{min-height:80px;margin:16px 0 0;padding:12px;border-radius:12px;background:#fffdf6;border:1px solid var(--line)}.controls{display:grid;grid-template-columns:repeat(3,52px);gap:5px;justify-content:center;margin:16px auto 8px}.controls button{padding:7px;font-size:23px}.up{grid-column:2}.left{grid-row:2;grid-column:1}.down{grid-row:2;grid-column:2}.right{grid-row:2;grid-column:3}.actions{justify-content:center}.tip,details,footer{font-size:14px}.tip{text-align:center}details{margin-top:20px}summary{cursor:pointer;padding:5px 0}footer{border-top:1px solid var(--line);margin-top:24px;padding-top:12px}#next[hidden]{display:none}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}@media(max-width:390px){main{padding-top:16px}.garden{padding:12px 8px}.stats{gap:10px}nav button{flex:1;padding:8px 5px}}
+</style>
+</head>
+<body>
+<main>
+<div class="eyebrow" lang="en">A SMALL RAIN GARDEN</div>
+<h1>작은 비의 정원</h1>
+<p>구름을 옮겨 모든 새싹에 비를 내려 주세요. 한 칸 이동할 때마다 물방울 하나를 씁니다. 돌은 지나갈 수 없어요.</p>
+<nav aria-label="정원 선택">
+<button type="button" id="level-0" aria-pressed="true">1 · 첫 비</button>
+<button type="button" id="level-1" aria-pressed="false">2 · 돌담 너머</button>
+<button type="button" id="level-2" aria-pressed="false">3 · 비의 순서</button>
+</nav>
+<section class="garden" aria-label="작은 비 퍼즐">
+<div id="stage-title" class="stage-title"></div>
+<div class="stats"><span id="water"></span><span id="flowers"></span><span id="moves"></span></div>
+<div id="board" class="board" role="group" aria-label="5행 5열 정원. 구름 옆 칸을 눌러 이동하세요."></div>
+<p id="message" class="message" role="status" aria-live="polite" aria-atomic="true"></p>
+</section>
+<div class="controls" role="group" aria-label="구름 이동">
+<button type="button" class="up" id="up" aria-label="위로 이동">↑</button>
+<button type="button" class="left" id="left" aria-label="왼쪽으로 이동">←</button>
+<button type="button" class="down" id="down" aria-label="아래로 이동">↓</button>
+<button type="button" class="right" id="right" aria-label="오른쪽으로 이동">→</button>
+</div>
+<p class="tip">옆 칸 누르기 / 방향키로 이동 · 막힌 이동은 물을 쓰지 않아요.</p>
+<div class="actions"><button type="button" id="undo">한 걸음 되돌리기</button><button type="button" id="reset">이 정원 다시 시작</button><button type="button" id="next" hidden>다음 정원 →</button></div>
+<details><summary lang="en">English rules</summary><p lang="en">Move the cloud one square up, down, left or right. Each valid move uses one drop. Visit every sprout to make it bloom; rocks block the way. Revisited flowers use a drop too. Undo restores your last move, even after running dry or finishing. Choose any garden above; there is no timer.</p></details>
+<footer>세 개의 작은 정원을 천천히 풀어 보세요. 설치·가입 없이 실행되며, 진행 상황은 저장하지 않습니다.<p><a href="../#free-resources">무료 체험 모음으로 돌아가기</a></p></footer>
+</main>
+<script>
+'use strict';
+const LEVELS = [
+ {name:'첫 비',hint:'가까운 새싹부터 비를 내려 보세요.',start:[0,2],targets:[[1,2],[3,2],[3,3]],rocks:[],water:4},
+ {name:'돌담 너머',hint:'돌담의 위와 아래, 어느 쪽으로 돌아갈까요?',start:[0,2],targets:[[2,1],[3,2],[3,3]],rocks:[[1,1],[1,2],[1,3]],water:9},
+ {name:'비의 순서',hint:'같은 길도 새싹을 만나는 순서가 달라요.',start:[2,2],targets:[[3,2],[3,0],[1,0],[3,4]],rocks:[[2,1],[2,3]],water:9}
+];
+function createState(level) {
+ if (!Number.isInteger(level) || level < 0 || level >= LEVELS.length) throw new RangeError('Unknown garden');
+ const map = LEVELS[level];
+ return {level,x:map.start[0],y:map.start[1],water:map.water,bloom:0,moves:0,phase:'playing'};
+}
+function transition(state,dx,dy) {
+ const blocked = reason => ({state,changed:false,reason});
+ if (!Number.isInteger(dx) || !Number.isInteger(dy) || Math.abs(dx)+Math.abs(dy)!==1) return blocked('adjacent');
+ if (state.phase==='won') return blocked('won');
+ if (state.water<=0 || state.phase==='dry') return blocked('dry');
+ const x=state.x+dx,y=state.y+dy,map=LEVELS[state.level];
+ if(x<0 || x>=5 || y<0 || y>=5) return blocked('edge');
+ if(map.rocks.some(p=>p[0]===x && p[1]===y)) return blocked('rock');
+ const target=map.targets.findIndex(p=>p[0]===x && p[1]===y);
+ const bloom=target<0 ? state.bloom : state.bloom | (1<<target);
+ const water=state.water-1,phase=bloom===(1<<map.targets.length)-1 ? 'won' : water===0 ? 'dry' : 'playing';
+ return {state:{...state,x,y,water,bloom,moves:state.moves+1,phase},changed:true,reason:''};
+}
+function makeGame(level=0) {
+ let state=createState(level),history=[];
+ return {
+  state:()=>({...state}), historyLength:()=>history.length,
+  move(dx,dy){const result=transition(state,dx,dy);if(result.changed){history.push(state);state=result.state;}return {...result,state:{...state}};},
+  undo(){if(!history.length)return false;state=history.pop();return true;},
+  reset(){state=createState(state.level);history=[];},
+  selectLevel(level){const next=createState(level);state=next;history=[];}
+ };
+}
+const RainGardenEngine = {LEVELS,createState,transition,makeGame};
+/* UI */
+const game=makeGame();
+const byId=id=>document.getElementById(id);
+const svg=body=>'<svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">'+body+'</svg>';
+const icons={
+ cloud:svg('<path d="M15 43C3 43 3 25 15 24C15 8 39 6 44 23C61 20 65 43 49 43Z" fill="#fafdff" stroke="#48728c" stroke-width="3"/><path d="M23 49l-3 5m15-5-3 5" stroke="#48728c" stroke-width="3" stroke-linecap="round"/>').replace('<svg ','<svg class="cloud-icon" '),
+ sprout:svg('<path d="M32 55V29" stroke="#35654b" stroke-width="4"/><path d="M32 39C15 41 10 26 12 21C27 19 34 28 32 39ZM32 31C31 16 44 10 54 13C55 24 45 33 32 31Z" fill="#67945a" stroke="#35654b" stroke-width="2"/>').replace('<svg ','<svg class="plant" '),
+ flower:svg('<path d="M32 55V32M32 47l-10-7" stroke="#35654b" stroke-width="4"/><g fill="#e5a8a5" stroke="#995b57" stroke-width="2"><circle cx="32" cy="14" r="9"/><circle cx="45" cy="23" r="9"/><circle cx="40" cy="38" r="9"/><circle cx="24" cy="38" r="9"/><circle cx="19" cy="23" r="9"/></g><circle cx="32" cy="26" r="8" fill="#f9dd83" stroke="#995b57" stroke-width="2"/>').replace('<svg ','<svg class="plant" '),
+ rock:svg('<path d="M9 45L15 24L29 16L48 22L56 43L44 51H20Z" fill="#879185" stroke="#4b594d" stroke-width="3"/><path d="M18 32l12-8 14 6" fill="none" stroke="#c2c9be" stroke-width="3"/>'),
+ soil:svg('<path d="M10 32h44" stroke="#b6c5a6" stroke-width="5" stroke-linecap="round"/>').replace('<svg ','<svg class="soil" ')
+};
+const cells=[];
+for(let y=0;y<5;y++)for(let x=0;x<5;x++){
+ const cell=document.createElement('button');cell.type='button';
+ cell.addEventListener('click',()=>{const state=game.state();move(x-state.x,y-state.y);});
+ byId('board').appendChild(cell);cells.push(cell);
+}
+const messages={adjacent:'구름 바로 옆의 한 칸을 골라 주세요.',edge:'정원 밖으로는 갈 수 없어요. 물방울은 그대로예요.',rock:'돌이 길을 막고 있어요. 돌아가는 길을 찾아보세요.',dry:'물방울이 모두 떨어졌어요. 한 걸음 되돌려 다른 길을 골라 보세요.',won:'이미 모든 꽃이 피었어요. 되돌리거나 다른 정원을 골라 보세요.'};
+function render(feedback=''){
+ const state=game.state(),map=LEVELS[state.level];
+ byId('stage-title').textContent=(state.level+1)+' / 3 · '+map.name;
+ byId('water').textContent='물방울 '+state.water;
+ byId('flowers').textContent='꽃 '+map.targets.filter((_,i)=>state.bloom&(1<<i)).length+' / '+map.targets.length;
+ byId('moves').textContent='걸음 '+state.moves;
+ cells.forEach((cell,i)=>{
+  const x=i%5,y=Math.floor(i/5),rock=map.rocks.some(p=>p[0]===x&&p[1]===y),target=map.targets.findIndex(p=>p[0]===x&&p[1]===y),bloomed=target>=0&&Boolean(state.bloom&(1<<target)),cloud=state.x===x&&state.y===y;
+  cell.className='cell'+(rock?' rock':'')+(cloud?' cloud':'');cell.disabled=rock;
+  cell.innerHTML=(rock?icons.rock:target>=0?(bloomed?icons.flower:icons.sprout):icons.soil)+(cloud?icons.cloud:'');
+  cell.setAttribute('aria-label',(y+1)+'행 '+(x+1)+'열 · '+(rock?'돌':target>=0?(bloomed?'꽃':'새싹'):'빈 땅')+(cloud?' · 구름 위치':''));
+ });
+ LEVELS.forEach((_,i)=>byId('level-'+i).setAttribute('aria-pressed',String(state.level===i)));
+ byId('undo').disabled=game.historyLength()===0;
+ byId('next').hidden=!(state.phase==='won'&&state.level<LEVELS.length-1);
+ byId('next').disabled=state.phase!=='won';
+ byId('message').textContent=feedback||(state.phase==='won'?'모든 꽃이 피었어요! 작은 정원에 비가 잘 닿았네요. 잠시 꽃을 바라보세요.':state.phase==='dry'?messages.dry:map.hint);
+}
+function move(dx,dy){const result=game.move(dx,dy);render(result.changed?'':messages[result.reason]);}
+[['up',0,-1],['down',0,1],['left',-1,0],['right',1,0]].forEach(([id,dx,dy])=>byId(id).addEventListener('click',()=>move(dx,dy)));
+byId('undo').addEventListener('click',()=>{if(game.undo())render('한 걸음 전으로 돌아왔어요. 물방울과 꽃도 함께 돌아왔어요.');});
+byId('reset').addEventListener('click',()=>{game.reset();render('이 정원을 처음부터 다시 시작했어요.');});
+LEVELS.forEach((_,i)=>byId('level-'+i).addEventListener('click',()=>{game.selectLevel(i);render();}));
+byId('next').addEventListener('click',()=>{const state=game.state();if(state.phase==='won'&&state.level<LEVELS.length-1){game.selectLevel(state.level+1);render();}});
+document.addEventListener('keydown',event=>{
+ if(event.altKey||event.ctrlKey||event.metaKey||event.shiftKey||event.target.closest('nav'))return;
+ const directions={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0]},direction=directions[event.key];
+ if(direction){event.preventDefault();move(...direction);}
+});
+render();
+</script>
+</body>
+</html>
