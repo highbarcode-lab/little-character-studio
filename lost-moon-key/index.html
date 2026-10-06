@@ -118,6 +118,9 @@
 <style>
 #moon-duo{margin-top:30px}#moon-duo [hidden]{display:none!important}#moon-duo button:focus-visible,#moon-duo input:focus-visible{outline:3px solid #8a5e00;outline-offset:3px}#moon-duo .duo-actions{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}#moon-duo .duo-actions button{max-width:100%;white-space:normal}#moon-duo .duo-clue{border:2px dashed var(--line);border-radius:12px;padding:16px;margin:16px 0}#moon-duo .duo-lamps{padding-left:22px}#moon-duo .duo-lamps li{margin:12px 0}#moon-duo fieldset{min-width:0;border:2px solid var(--line);border-radius:12px;padding:12px}#moon-duo .duo-keys{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}#moon-duo .duo-key{display:block;border:2px solid var(--line);border-radius:10px;padding:12px;overflow-wrap:anywhere}#moon-duo .duo-key:has(input:checked){border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}#moon-duo .duo-key input{width:20px;height:20px;margin:0 8px 8px 0;vertical-align:middle}#moon-duo .duo-key b{display:block}#moon-duo .duo-swatch{display:inline-block;width:20px;height:20px;border:1px solid #111827;vertical-align:middle}#moon-duo .duo-blue{background:#426bba}#moon-duo .duo-yellow{background:#edc851}#moon-duo .duo-violet{background:#9674c3}#moon-duo-status{min-height:3em;font-weight:700}#moon-duo-ending{border:3px double var(--accent);border-radius:12px;background:var(--soft);padding:18px;margin-top:18px}@media(max-width:560px){#moon-duo .duo-keys{grid-template-columns:repeat(2,minmax(0,1fr))}#moon-duo{padding:16px}}@media print{#moon-duo{display:none!important}}
 </style>
+<!-- ROLE-CARD-STYLE-BEGIN -->
+<style>#moon-duo-card{min-width:0;overflow-wrap:anywhere}#moon-duo-card-text{display:block;width:100%;min-height:16em;font:inherit;white-space:pre-wrap;overflow-wrap:anywhere}#moon-duo-card a{display:inline-block;max-width:100%;overflow-wrap:anywhere}#moon-duo-card textarea:focus-visible,#moon-duo-card a:focus-visible{outline:3px solid #8a5e00;outline-offset:3px}</style>
+<!-- ROLE-CARD-STYLE-END -->
 <!-- MOON-DUO-STYLE-END -->
 </head>
 <body>
@@ -176,6 +179,9 @@
         <div class="duo-clue"><p data-duo-rule="zero" data-duo-shape="star"><b>하나도 준비되지 않음 → ★ 별</b></p><p data-duo-rule="even" data-duo-shape="circle"><b>하나 이상이며 둘씩 짝지어 남지 않음 → ● 원</b></p><p data-duo-rule="odd" data-duo-shape="moon"><b>둘씩 짝지으면 하나 남음 → ☾ 달</b></p></div>
         <p class="ko">수와 짝짓기 규칙을 함께 해석하세요. 실제 등불 색과 준비된 수는 이 기록대에서 보이지 않습니다. 별지기에게 물어보세요.</p>
       </div>
+<!-- ROLE-CARD-ROOM-BEGIN -->
+      <div id="moon-duo-card" hidden><h3 id="moon-duo-card-heading">현재 역할 단서 카드</h3><p>관측 표시가 같은 두 카드를 사용하세요. 새 관측에서는 두 카드 모두 다시 준비하세요. 이미 저장·전달한 파일은 회수되지 않습니다. 파일 전달은 직접 하며 자동 전송·동기화는 없습니다. 최종 열쇠 선택은 원래 진행 기기에서 하세요.</p><button class="btn" id="moon-duo-card-prepare" type="button">역할 단서 카드 준비</button><div id="moon-duo-card-output" hidden><label for="moon-duo-card-text">현재 역할의 단서 · 읽기 전용 텍스트</label><textarea id="moon-duo-card-text" readonly rows="10" spellcheck="false"></textarea><a class="btn" id="moon-duo-card-save" hidden>역할 TXT 직접 저장</a></div><p id="moon-duo-card-status" role="status" aria-live="polite"></p></div>
+<!-- ROLE-CARD-ROOM-END -->
       <button class="btn" id="moon-duo-handoff" type="button" hidden>단서 가리고 기기 건네기</button>
       <div id="moon-duo-table-panel" hidden>
         <h3 id="moon-duo-table-title" tabindex="-1">함께 고르는 열쇠</h3>
@@ -244,6 +250,30 @@
   lampNodes.forEach((e,i)=>{e.dataset.duoReady=String(observation.ready[i]);e.textContent=shapes[lampShapes[i]]+' 등불 — '+(observation.ready[i]?'준비됨':'청소 중');});
   ruleNodes.forEach(e=>{e.dataset.duoShape=rules[e.dataset.duoRule];e.querySelector('b').textContent=ruleLabels[e.dataset.duoRule]+' → '+shapes[rules[e.dataset.duoRule]];});
  }
+// ROLE-CARD-SCRIPT-BEGIN
+ const card=byId('card'),cardOutput=byId('card-output'),cardField=byId('card-text'),cardSave=byId('card-save'),cardStatus=byId('card-status');
+ const cardSession=Date.now().toString(36);let cardRound=1,cardTag='obs-'+cardSession+'-'+cardRound,cardUrl=null,cardClosed=false,cardVersion=0;
+ function clearRoleCard(){cardVersion++;if(cardUrl){URL.revokeObjectURL(cardUrl);cardUrl=null;}cardField.value='';cardOutput.hidden=true;cardSave.hidden=true;cardSave.removeAttribute('href');cardSave.removeAttribute('download');cardStatus.textContent='';}
+ function roleCardText(role,tag,obs,map){
+  const title=role==='star'?'별지기':'기록지기';
+  const head='두 관측자의 달 서고 · '+title+' 단서 카드\n관측 표시: '+tag+'\n관측 표시는 비교용이며 고유성·보안을 보장하지 않습니다.\n\n';
+  const clues=role==='star'?'같은 세 색 순서가 반복됩니다. 다음 색을 관측하세요.\n'+obs.sequence.map(c=>colors[c]).join(' → ')+' → ?\n준비됨만 세세요. 장식 도형을 열쇠 도형으로 그대로 고르지 마세요.\n'+obs.ready.map((ready,i)=>(i+1)+'. '+shapes[lampShapes[i]]+' 등불 — '+(ready?'준비됨':'청소 중')).join('\n'):'별지기가 말한 준비된 등불 수를 아래 규칙으로 해석하세요.\n'+categories.map(k=>ruleLabels[k]+' → '+shapes[map[k]]).join('\n');
+  return head+clues+'\n\n두 카드의 관측 표시가 같은지 확인하세요. 새 관측에서는 두 카드 모두 다시 준비하세요. 저장·전달한 파일은 회수되지 않습니다. 최종 열쇠는 원래 진행 기기에서 함께 고르세요.\n';
+ }
+ function cardIsCurrent(version,role,tag){return !cardClosed&&cardVersion===version&&screen===role&&cardTag===tag;}
+ byId('card-prepare').addEventListener('click',()=>{
+  if(cardClosed||(screen!=='star'&&screen!=='record'))return;
+  clearRoleCard();const version=cardVersion,role=screen,tag=cardTag,text=roleCardText(role,tag,observation,rules);
+  if(new TextEncoder().encode(text).byteLength>4096){cardStatus.textContent='카드가 너무 큽니다. 파일을 준비하지 않았습니다.';return;}
+  cardField.value=text;cardOutput.hidden=false;let url;
+  try{url=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));}
+  catch(error){if(cardIsCurrent(version,role,tag))cardStatus.textContent='TXT 파일을 준비하지 못했습니다. 위 읽기 전용 텍스트를 선택해 직접 복사하세요.';return;}
+  if(!cardIsCurrent(version,role,tag)){URL.revokeObjectURL(url);return;}
+  cardUrl=url;cardSave.href=url;cardSave.download='moon-'+role+'-'+tag+'.txt';cardSave.hidden=false;cardStatus.textContent='현재 역할 카드가 준비됐습니다. TXT 저장 링크를 직접 누르세요. 실제 저장 완료는 다운로드에서 확인하세요.';
+ });
+ window.addEventListener('pagehide',()=>{cardClosed=true;clearRoleCard();card.hidden=true;});
+ window.addEventListener('pageshow',event=>{if(event.persisted){cardClosed=false;card.hidden=screen!=='star'&&screen!=='record';}});
+// ROLE-CARD-SCRIPT-END
  function restart(message){seenStar=false;seenRecord=false;inputs.forEach(e=>e.checked=false);ending.hidden=true;show('neutral');status.textContent=message;}
  byId('new').addEventListener('click',()=>{
   const previous=answer,readyCount=observation.ready.filter(Boolean).length;
@@ -251,10 +281,11 @@
   // Finite catalog, one selection, deterministic fallback; no redraw loop.
   const roll=Math.random(),index=Number.isFinite(roll)&&roll>=0&&roll<1?Math.floor(roll*candidates.length):0;
   const chosen=candidates[index]||candidates[0];
+  /* ROLE-CARD-NEW-BEGIN */cardTag='obs-'+cardSession+'-'+(++cardRound);/* ROLE-CARD-NEW-END */
   observation={sequence:[...chosen.observation.sequence],ready:[...chosen.observation.ready]};rules={...chosen.rules};answer=solve(observation,rules);render();
   restart('새 관측과 기록 규칙으로 바꿨습니다. 직전과 다른 열쇠입니다. 두 역할의 단서를 새로 읽으세요.');
  });
- function show(next){screen=next;neutral.hidden=next!=='neutral';star.hidden=next!=='star';record.hidden=next!=='record';table.hidden=next!=='table';handoff.hidden=next!=='star'&&next!=='record';byId(next==='neutral'?'neutral-title':next==='star'?'star-title':next==='record'?'record-title':'table-title').focus();}
+ function show(next){/* ROLE-CARD-SHOW-BEGIN */clearRoleCard();card.hidden=cardClosed||(next!=='star'&&next!=='record');byId('card-heading').textContent=(next==='star'?'별지기':'기록지기')+' · 관측 표시: '+cardTag;/* ROLE-CARD-SHOW-END */screen=next;neutral.hidden=next!=='neutral';star.hidden=next!=='star';record.hidden=next!=='record';table.hidden=next!=='table';handoff.hidden=next!=='star'&&next!=='record';byId(next==='neutral'?'neutral-title':next==='star'?'star-title':next==='record'?'record-title':'table-title').focus();}
  byId('star').addEventListener('click',()=>{if(screen!=='neutral')return;seenStar=true;show('star');status.textContent='별지기만 관측하세요. 준비된 수와 다음 색을 말로 공유한 뒤 단서를 가리세요.';});
  byId('record').addEventListener('click',()=>{if(screen!=='neutral')return;seenRecord=true;show('record');status.textContent='기록지기만 읽으세요. 준비된 수를 도형으로 바꾸는 규칙을 해석해 공유하세요.';});
  handoff.addEventListener('click',()=>{show('neutral');status.textContent='단서를 가렸습니다. 상대에게 기기를 건네고 역할을 선택하세요.';});
