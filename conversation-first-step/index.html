@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="가상의 인계 지연 상황에서 첫 문장과 후속 질문을 고르고, 확인한 정보와 남은 질문을 돌아보는 한국어 선택형 대화 한 장면.">
+  <title>대화의 첫걸음 · 인계가 늦어진 오후</title>
+  <style>
+    :root{--ink:#182925;--muted:#50625c;--line:#bccbc4;--accent:#225f4e;--paper:#f4f3ed;--soft:#edf4ef}
+    *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.75 system-ui,"Malgun Gothic",sans-serif}
+    main{max-width:820px;margin:auto;padding:32px 22px 64px}h1{font-size:clamp(30px,6vw,46px);line-height:1.25;margin:8px 0 20px}h2{font-size:25px;line-height:1.4;margin:0 0 16px}h3{font-size:21px;line-height:1.5;margin:0 0 12px}p{margin:0 0 16px}a{color:var(--accent);text-underline-offset:4px}a:focus-visible,summary:focus-visible{outline:3px solid #8a5e00;outline-offset:4px;border-radius:4px}
+    .skip{position:absolute;left:12px;top:-100px;background:#fff;padding:8px 14px}.skip:focus{top:12px}.eyebrow{font-size:13px;font-weight:750;letter-spacing:.08em;margin:0;color:var(--accent)}.intro{color:var(--muted)}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px;margin:24px 0}.facts{padding-left:22px;margin:0}.facts li{margin:8px 0}.step{display:inline-block;font-size:14px;font-weight:750;border:1px solid var(--line);border-radius:99px;padding:2px 12px;margin-bottom:12px}
+    details{background:#fff;border:1px solid var(--line);border-radius:14px;margin:14px 0;scroll-margin-top:18px}summary{cursor:pointer;padding:20px;font-weight:750;line-height:1.65}details[open]>summary{border-bottom:1px solid var(--line);background:var(--soft);border-radius:14px 14px 0 0}.inside{padding:22px}.role{display:block;font-size:13px;letter-spacing:.04em;font-weight:800;color:var(--muted);margin-bottom:4px}.speech{padding-left:15px;border-left:3px solid var(--line);margin-bottom:20px}.choice{background:#fafbf8}.choice summary{font-size:16px}.result{border-top:1px solid var(--line);padding-top:18px;margin-top:20px}.result dl{margin:0}.result dt{font-weight:750;margin-top:14px}.result dd{margin:4px 0 16px}.return{font-size:14px;margin-top:20px}.note{font-size:14px;color:var(--muted)}footer{border-top:1px solid var(--line);padding-top:20px;margin-top:32px;font-size:14px;color:var(--muted)}
+    @media(max-width:480px){main{padding:24px 14px 44px}.card{padding:20px}summary{padding:17px}.inside{padding:17px}.speech{padding-left:12px}h2{font-size:23px}}
+  </style>
+</head>
+<body>
+  <a class="skip" href="#choices">첫 문장 선택으로 이동</a>
+  <main id="top">
+    <header>
+      <p class="eyebrow">대화의 첫걸음 / 원본 선택형 장면</p>
+      <h1>인계가 늦어진 오후</h1>
+      <p class="intro">첫 팀장인 당신이 동료와 업무 인계에 관해 이야기합니다. 가상의 상황입니다. 첫 문장 하나를 열고, 동료의 반응을 읽은 뒤 후속 문장 하나를 골라 보세요.</p>
+      <p class="note">접힌 제목을 누르면 다음 대화가 펼쳐집니다. 다른 선택도 비교해서 읽을 수 있습니다. 답을 입력하거나 저장하지 않으며, 점수나 사람에 대한 평가는 없습니다.</p>
+    </header>
+
+    <section class="card" aria-labelledby="scene-title">
+      <h2 id="scene-title">지금 당신이 아는 것</h2>
+      <ul class="facts">
+        <li>내일 오전 10시 팀 회의에 쓸 운영 자료를 오늘 오후 4시에 받기로 했습니다.</li>
+        <li>지금은 오후 4시 20분입니다. 공유 폴더에 파일이 아직 없습니다.</li>
+        <li>왜 늦어졌는지, 지금 공유할 수 있는 부분이 있는지는 듣지 못했습니다.</li>
+      </ul>
+      <p class="note">대화 상대는 동료 한 명입니다. 아래 반응은 이 장면을 위해 쓴 예시이며 실제 사람의 반응을 예측하지 않습니다.</p>
+    </section>
+
+    <section id="choices" aria-labelledby="choices-title">
+      <span class="step">1 / 첫 문장 고르기</span>
+      <h2 id="choices-title">어떤 말로 시작할까요?</h2>
+
+      <details id="opening-a" name="opening">
+        <summary>A. “약속한 시간이 지났는데 아직 파일이 없네요. 지금 바로 보내 주세요.”</summary>
+        <div class="inside">
+          <p class="speech"><span class="role">동료</span>“아직 확인할 게 두 개 있어요. 확인이 끝나면 보내겠습니다.”</p>
+          <p>두 가지 확인이 남아 있다는 말을 들었습니다. 무엇을 확인하는지와 초안을 보낼 수 있는지는 아직 모릅니다.</p>
+          <span class="step">2 / 후속 문장 고르기</span>
+          <details class="choice" id="a-1" name="follow-a">
+            <summary>A1. “확인 답변이 없어도 일단 완성본으로 보내 주세요.”</summary>
+            <div class="inside">
+              <p class="speech"><span class="role">동료</span>“본문은 끝났지만 표에 있는 두 수치의 기준을 확인하지 못했어요. 미확인 상태를 숨긴 채 완성본이라고 표시하기는 어렵습니다.”</p>
+              <p class="speech"><span class="role">당신</span>“알겠습니다. 그 부분은 확인하고 보내 주세요.”</p>
+              <section class="result" id="end-a1" aria-labelledby="end-a1-title">
+                <h3 id="end-a1-title">A1 / 확인을 기다리며 대화가 끝났습니다</h3>
+                <dl><dt>확인한 정보</dt><dd>본문은 끝났고, 표의 두 수치에 미확인 기준이 있습니다. 지금 완성본으로 취급하기는 어렵습니다.</dd><dt>남은 질문</dt><dd>어떤 기준이 빠졌는지, 이미 확인 요청을 했는지, 초안 공유가 가능한지, 언제 다시 현황을 볼지는 정하지 못했습니다.</dd><dt>돌아보기</dt><dd>급한 전달을 요구하다가 “완성”의 의미가 달랐다는 점을 알았습니다. 다음 대화에서 완성본과 공유 가능한 초안을 구분해 물어볼 수 있을까요?</dd></dl>
+              </section>
+              <p class="return"><a href="#opening-a">A의 다른 후속 문장 보기</a> · <a href="#review">장면 돌아보기</a></p>
+            </div>
+          </details>
+          <details class="choice" id="a-2" name="follow-a">
+            <summary>A2. “확인할 두 가지가 무엇인가요? 지금 공유할 수 있는 부분도 있나요?”</summary>
+            <div class="inside">
+              <p class="speech"><span class="role">동료</span>“본문은 끝났고 표의 두 수치 기준이 남았어요. 오후 2시에 확인 요청을 남겼는데 아직 답이 없어요. 미확인 부분을 표시한 초안은 지금 공유할 수 있습니다.”</p>
+              <p class="speech"><span class="role">당신</span>“그럼 표시한 초안을 먼저 받고, 오후 4시 45분에 답변 상태를 다시 확인할까요?”</p>
+              <p class="speech"><span class="role">동료</span>“네, 초안은 먼저 보내겠습니다. 4시 45분에 현황은 알려드릴 수 있지만, 그때까지 답변이 올지는 모르겠습니다.”</p>
+              <section class="result" id="end-a2" aria-labelledby="end-a2-title">
+                <h3 id="end-a2-title">A2 / 초안과 다음 확인 시점을 나눴습니다</h3>
+                <dl><dt>확인한 정보</dt><dd>완료된 본문, 미확인 수치 두 개, 오후 2시의 확인 요청, 먼저 공유 가능한 초안을 알았습니다. 오후 4시 45분 현황 확인에 합의했습니다.</dd><dt>남은 질문</dt><dd>수치 기준이 구체적으로 어떻게 모호한지는 아직 듣지 못했습니다. 답변 도착과 최종본 완성 시각도 확정되지 않았습니다.</dd><dt>돌아보기</dt><dd>첫 요청은 같았지만 후속 질문이 공유 가능한 부분을 드러냈습니다. 다음 확인 시점을 정한 것과 그때 최종본이 완성된다는 약속을 구분해 보세요.</dd></dl>
+              </section>
+              <p class="return"><a href="#opening-a">A의 다른 후속 문장 보기</a> · <a href="#review">장면 돌아보기</a></p>
+            </div>
+          </details>
+        </div>
+      </details>
+
+      <details id="opening-b" name="opening">
+        <summary>B. “자료가 아직 안 보여요. 어디까지 됐고, 무엇이 막혔는지 알려줄래요?”</summary>
+        <div class="inside">
+          <p class="speech"><span class="role">동료</span>“본문은 끝났는데 표의 두 수치 기준이 불명확해요. 오후 2시에 확인 요청을 남겼지만 아직 답이 없어요. 미확인 표시를 한 초안은 보낼 수 있습니다.”</p>
+          <p>완료된 부분, 기다리는 답변, 먼저 받을 수 있는 초안을 들었습니다. 확인 요청의 내용과 이후 일정은 아직 살펴보지 않았습니다.</p>
+          <span class="step">2 / 후속 문장 고르기</span>
+          <details class="choice" id="b-1" name="follow-b">
+            <summary>B1. “기준이 어떻게 모호한가요? 확인 요청 내용과 초안을 같이 볼 수 있을까요?”</summary>
+            <div class="inside">
+              <p class="speech"><span class="role">동료</span>“새 양식에 두 수치가 월간 값인지 누적 값인지 표시가 없어요. 그 구분을 물었습니다. 초안에는 두 칸을 비우고 ‘기준 확인 중’이라고 쓸 수 있어요.”</p>
+              <p class="speech"><span class="role">당신</span>“그 초안과 질문 내용을 먼저 공유해 주세요. 오후 4시 45분에 답변 상태를 함께 보고, 미확인 칸을 어떻게 다룰지 정하겠습니다.”</p>
+              <p class="speech"><span class="role">동료</span>“네, 그렇게 공유하겠습니다. 다만 답변이 언제 올지는 아직 모릅니다.”</p>
+              <section class="result" id="end-b1" aria-labelledby="end-b1-title">
+                <h3 id="end-b1-title">B1 / 모호한 기준을 함께 볼 준비를 했습니다</h3>
+                <dl><dt>확인한 정보</dt><dd>새 양식에 월간·누적 구분이 빠졌다는 구체적인 장애를 알았습니다. 확인 요청과 빈칸 표시 초안을 함께 받기로 했고, 오후 4시 45분에 다시 보기로 합의했습니다.</dd><dt>남은 질문</dt><dd>정확한 수치 기준은 답변 전까지 미확정입니다. 이 계획만으로 내일 회의 전에 최종본이 완성된다고 보장할 수 없습니다.</dd><dt>돌아보기</dt><dd>“막혔다”를 구체적인 질문으로 바꿨습니다. 다음 확인에서 답변이 없더라도 판단해야 할 항목은 무엇인지 떠올려 보세요.</dd></dl>
+              </section>
+              <p class="return"><a href="#opening-b">B의 다른 후속 문장 보기</a> · <a href="#review">장면 돌아보기</a></p>
+            </div>
+          </details>
+          <details class="choice" id="b-2" name="follow-b">
+            <summary>B2. “그럼 오늘 안에는 완성할 수 있겠죠?”</summary>
+            <div class="inside">
+              <p class="speech"><span class="role">동료</span>“답변이 언제 올지 몰라 오늘 안에 완성할 수 있다고 확답하기는 어려워요.”</p>
+              <p class="speech"><span class="role">당신</span>“알겠습니다. 답변이 오면 알려 주세요.”</p>
+              <section class="result" id="end-b2" aria-labelledby="end-b2-title">
+                <h3 id="end-b2-title">B2 / 일정의 불확실성만 확인했습니다</h3>
+                <dl><dt>확인한 정보</dt><dd>처음 들은 본문 완료·수치 미확인·오후 2시 요청·초안 가능 여부에 더해, 오늘 안에 끝난다는 확답은 어렵다는 점을 알았습니다.</dd><dt>남은 질문</dt><dd>월간·누적 구분 문제를 구체적으로 보지 못했고, 가능한 초안을 언제 받을지도 정하지 않았습니다. 답변이 안 올 때 다시 이야기할 시점도 없습니다.</dd><dt>돌아보기</dt><dd>열린 첫 질문으로 정보를 들었지만 후속 문장은 완료 약속에 집중했습니다. 답변이 오지 않는 경우의 다음 행동도 물어볼 필요가 있을까요?</dd></dl>
+              </section>
+              <p class="return"><a href="#opening-b">B의 다른 후속 문장 보기</a> · <a href="#review">장면 돌아보기</a></p>
+            </div>
+          </details>
+        </div>
+      </details>
+
+      <details id="opening-c" name="opening">
+        <summary>C. “바쁜 것 같아서요. 괜찮아요, 준비되면 보내 주세요.”</summary>
+        <div class="inside">
+          <p class="speech"><span class="role">동료</span>“그럼 확인이 끝나는 대로 보내겠습니다.”</p>
+          <p>상대가 바쁠 것이라고 먼저 짐작했습니다. 동료는 확인이 끝나면 보내겠다고 했지만, 무엇을 확인하는지는 설명하지 않았습니다.</p>
+          <span class="step">2 / 후속 문장 고르기</span>
+          <details class="choice" id="c-1" name="follow-c">
+            <summary>C1. “내일 10시 회의에 필요해요. 지금 공유할 수 있는 부분은 어디까지인가요?”</summary>
+            <div class="inside">
+              <p class="speech"><span class="role">동료</span>“본문은 끝났어요. 표의 두 수치 기준만 확인 중이라 그 부분을 표시한 초안은 보낼 수 있습니다.”</p>
+              <p class="speech"><span class="role">당신</span>“초안은 오후 4시 30분에 받을 수 있을까요? 그때 확인 중인 부분의 상태도 알려 주세요.”</p>
+              <p class="speech"><span class="role">동료</span>“네, 그때 초안과 현재 상태를 보내겠습니다. 기준 답변까지 올지는 모르겠습니다.”</p>
+              <section class="result" id="end-c1" aria-labelledby="end-c1-title">
+                <h3 id="end-c1-title">C1 / 필요한 시각과 초안 공유를 다시 맞췄습니다</h3>
+                <dl><dt>확인한 정보</dt><dd>본문이 끝났고 미확인 표시 초안을 받을 수 있습니다. 내일 오전 10시의 필요를 말하고 오늘 오후 4시 30분의 초안 공유에 합의했습니다.</dd><dt>남은 질문</dt><dd>오후 2시에 이미 요청했다는 사실과 월간·누적 구분이 빠진 원인은 듣지 못했습니다. 기준 답변 도착은 여전히 불확실합니다.</dd><dt>돌아보기</dt><dd>“준비되면”이라는 넓은 말을 필요한 시각과 공유 범위로 좁혔습니다. 이후 질문은 완료 시각만 묻는 대신 어떤 장애를 확인할 수 있을까요?</dd></dl>
+              </section>
+              <p class="return"><a href="#opening-c">C의 다른 후속 문장 보기</a> · <a href="#review">장면 돌아보기</a></p>
+            </div>
+          </details>
+          <details class="choice" id="c-2" name="follow-c">
+            <summary>C2. “고생 많아요. 저도 바쁘니 확인되면 그때 알려 주세요.”</summary>
+            <div class="inside">
+              <p class="speech"><span class="role">동료</span>“네, 확인 답변을 받으면 공유하겠습니다.”</p>
+              <p class="speech"><span class="role">당신</span>“네, 그럼 기다릴게요.”</p>
+              <section class="result" id="end-c2" aria-labelledby="end-c2-title">
+                <h3 id="end-c2-title">C2 / 서로 기다리기로 하고 대화를 닫았습니다</h3>
+                <dl><dt>확인한 정보</dt><dd>동료가 확인 답변을 기다린다는 점만 알았습니다. 바쁜지 여부나 이미 끝낸 분량은 실제로 확인하지 않았습니다.</dd><dt>남은 질문</dt><dd>완료된 본문, 두 수치의 기준, 오후 2시 요청, 초안 공유 가능 여부를 듣지 못했습니다. 다시 이야기할 시각도 정하지 않았습니다.</dd><dt>돌아보기</dt><dd>격려와 배려를 전했지만 작업 정보는 거의 남지 않았습니다. 기다리는 동안 회의 준비에 필요한 정보를 얻으려면 어떤 질문을 더할 수 있을까요?</dd></dl>
+              </section>
+              <p class="return"><a href="#opening-c">C의 다른 후속 문장 보기</a> · <a href="#review">장면 돌아보기</a></p>
+            </div>
+          </details>
+        </div>
+      </details>
+    </section>
+
+    <section class="card" id="review" aria-labelledby="review-title">
+      <h2 id="review-title">장면을 읽은 뒤</h2>
+      <p>선택한 경로에서 새로 알게 된 사실 하나와 끝까지 듣지 못한 사실 하나를 짚어 보세요. 다른 첫 문장이나 후속 문장을 열어, 같은 상황에서 정보가 어떻게 달라지는지 비교할 수 있습니다.</p>
+      <details id="fixed-facts"><summary>비교용: 모든 경로에서 같은 숨은 사실 보기</summary><div class="inside"><ul class="facts"><li>본문은 끝났습니다. 표의 두 수치가 월간 값인지 누적 값인지 새 양식에 표시가 없습니다.</li><li>동료는 오후 2시에 그 구분을 물었지만 오후 4시 20분까지 답변을 받지 못했습니다.</li><li>미확인 부분을 표시한 초안은 공유할 수 있습니다. 답변이 언제 올지는 모릅니다.</li></ul><p class="note">선택이 이 사실을 바꾸지는 않습니다. 무엇을 듣고 무엇을 함께 정했는지가 달라집니다.</p></div></details>
+      <p>다시 시작한다면 첫 문장은 유지하고 후속 질문만 바꿀 수도 있습니다. 상대의 성격을 결론내리기보다, 이 대화에서 확인한 정보와 빠진 정보를 구분해 보세요.</p>
+      <p><a href="#choices">첫 문장으로 돌아가기</a></p>
+    </section>
+    <footer>가상 업무 대화 한 장면 · 원본 무료 체험 · 기록·외부 전송 없음<br>실제 직원의 반응이나 대화 결과를 보장하지 않습니다.</footer>
+  </main>
+</body>
+</html>
