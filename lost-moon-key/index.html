@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en" data-print="none">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Lost Moon Key</title>
+  <script>
+    const printMode = new URLSearchParams(location.search).get('print') || 'none';
+    document.documentElement.dataset.print = printMode;
+  </script>
+  <style>
+    :root{--ink:#111827;--muted:#4b5563;--line:#9ca3af;--paper:#fff;--soft:#f3f4f6;--accent:#172554;--ok:#14532d;--bad:#991b1b}
+    *{box-sizing:border-box}
+    body{margin:0;background:#e5e7eb;color:var(--ink);font-family:Arial,"Malgun Gothic","Apple SD Gothic Neo",sans-serif;line-height:1.45}
+    button,input{font:inherit}
+    .screen{max-width:940px;margin:0 auto;padding:28px 18px 56px}
+    .hero{position:relative;overflow:hidden;background:var(--accent);color:#fff;border-radius:24px;padding:38px 34px;box-shadow:0 12px 32px #11182722}
+    .hero:after{content:"★  ·  ☾  ·  ★";position:absolute;right:30px;top:18px;font-size:36px;letter-spacing:10px;color:#fff9}
+    .kicker{margin:0 0 8px;text-transform:uppercase;letter-spacing:.18em;font-size:13px;font-weight:800}
+    h1{margin:0;font-size:clamp(38px,7vw,70px);line-height:1;letter-spacing:-.04em}
+    .subtitle{max-width:610px;margin:18px 0 0;font-size:18px;color:#e5e7eb}
+    .toolbar{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+    .btn{border:2px solid var(--ink);border-radius:999px;background:#fff;padding:10px 16px;font-weight:800;cursor:pointer}
+    .btn.primary{background:var(--ink);color:#fff}
+    .toolbar a.btn{color:var(--ink);text-decoration:none}
+    .intro,.puzzle,.finish{background:#fff;border:2px solid var(--ink);border-radius:18px;padding:22px;margin:14px 0;box-shadow:4px 4px 0 var(--ink)}
+    .intro p:last-child,.puzzle p:last-child{margin-bottom:0}
+    .label{display:inline-block;border:1.5px solid var(--ink);border-radius:999px;padding:3px 10px;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+    h2{margin:9px 0 4px;font-size:24px}
+    .ko{color:var(--muted);font-size:.94em}
+    .clue{margin:16px 0;padding:18px;border:2px dashed var(--line);border-radius:14px;text-align:center;font-weight:800;font-size:clamp(20px,4vw,30px);letter-spacing:.08em}
+    .pattern{font-size:clamp(15px,3vw,22px);letter-spacing:0}
+    .week{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin:16px 0}
+    .day{border:1.5px solid var(--ink);border-radius:8px;padding:10px 3px;text-align:center;font-size:12px;font-weight:800}
+    .day b{display:block;font-size:22px}
+    .buttons{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:16px 0}
+    .status{border:2px solid var(--ink);border-radius:50%;aspect-ratio:1;display:grid;place-items:center;text-align:center;font-weight:900;font-size:12px}
+    .status.clean{background:repeating-linear-gradient(45deg,#fff,#fff 5px,#ddd 5px,#ddd 7px)}
+    .answer-row{display:flex;align-items:center;gap:10px;margin-top:14px}
+    .answer-row input{width:74px;min-height:50px;border:2px solid var(--ink);border-radius:10px;text-align:center;font-size:25px;font-weight:900}
+    .answer-row small{color:var(--muted)}
+    .code-row{display:grid;grid-template-columns:repeat(4,64px);gap:10px;margin:18px 0}
+    .code-row input{width:64px;height:64px;border:3px solid var(--ink);border-radius:12px;text-align:center;font-size:30px;font-weight:900}
+    #feedback{min-height:26px;font-weight:800}
+    #feedback.ok{color:var(--ok)} #feedback.bad{color:var(--bad)}
+    .ending{display:none;border:3px double var(--ink);padding:18px;border-radius:12px;margin-top:18px;background:var(--soft)}
+    .ending.show{display:block}
+    .story-line{display:block;width:100%;border:0;border-bottom:2px solid var(--ink);padding:8px 2px;background:transparent;margin-top:10px}
+    footer{text-align:center;color:var(--muted);font-size:12px;margin-top:24px}
+    .print-pack{display:none}
+    @media(max-width:560px){.hero{padding:32px 22px}.hero:after{font-size:22px}.week{grid-template-columns:1fr}.day b{display:inline;margin-right:8px}.code-row{grid-template-columns:repeat(4,54px)}.code-row input{width:54px;height:58px}}
+    @media print{
+      @page{size:auto;margin:11mm}
+      body{background:#fff;color:#000;line-height:1.34;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+      .screen{display:none!important}
+      .print-pack{display:none}
+      html[data-print="none"] #players-print,html[data-print="players"] #players-print,html[data-print="parents"] #parents-print{display:block}
+      .sheet{width:100%;max-width:100%;min-height:250mm;overflow:hidden;page-break-after:always;break-after:page;position:relative;padding:2mm 1mm 10mm}
+      .sheet:last-child{page-break-after:auto;break-after:auto}
+      .sheet-head{display:block;position:relative;min-height:20mm;padding-right:22mm;border-bottom:3px solid #000;padding-bottom:5mm;margin-bottom:5mm}
+      .sheet-head>div:first-child{min-width:0}
+      .sheet-head h1{font-size:28pt;letter-spacing:-.03em}
+      .moonmark{position:absolute;right:0;top:0;border:2px solid #000;border-radius:50%;width:17mm;height:17mm;display:grid;place-items:center;font-size:22pt}
+      .sheet h2{font-size:17pt;margin:3mm 0 1mm}
+      .sheet h3{font-size:13pt;margin:3mm 0 1mm}
+      .sheet p{margin:1.8mm 0}
+      .mission-box,.print-puzzle,.parent-box{border:1.8px solid #000;border-radius:4mm;padding:5mm;margin:4mm 0;break-inside:avoid}
+      .print-puzzle{min-height:72mm}
+      .print-clue{border:1.5px dashed #555;border-radius:3mm;padding:5mm;text-align:center;font-size:18pt;font-weight:800;margin:4mm 0}
+      .print-pattern{font-size:15pt}
+      .write-box{display:inline-block;width:17mm;height:14mm;border:2px solid #000;border-radius:2mm;vertical-align:middle;margin-left:3mm}
+      .answer-strip{display:flex;gap:4mm;margin:6mm 0}
+      .answer-square{width:18mm;height:18mm;border:2.5px solid #000;border-radius:3mm}
+      .story-title{height:13mm;border-bottom:2px solid #000;margin-top:4mm}
+      .tiny{font-size:8.5pt;color:#333}
+      .page-no{position:absolute;z-index:3;bottom:2mm;right:4mm;padding-left:2mm;background:#fff;font-size:8pt}
+      .parent-box h2{display:block;clear:both;width:100%}
+      .print-week{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:2mm;margin:4mm 0}
+      .print-day{min-width:0;border:1.4px solid #000;border-radius:2mm;padding:3mm 1mm;text-align:center;font-size:9pt;font-weight:700}
+      .print-day b{display:block;font-size:17pt}
+      .print-buttons{display:grid;grid-template-columns:repeat(4,1fr);gap:4mm;margin:5mm 12mm}
+      .print-status{border:2px solid #000;border-radius:50%;aspect-ratio:1;display:grid;place-items:center;text-align:center;font-weight:800;font-size:9pt}
+      .print-status.clean{background:repeating-linear-gradient(45deg,#fff,#fff 4px,#ddd 4px,#ddd 6px)}
+      .hint{border-left:4px solid #000;padding-left:4mm;margin:3mm 0}
+      .answer-table{width:100%;border-collapse:collapse;margin:4mm 0}
+      .answer-table th,.answer-table td{border:1.4px solid #000;padding:3mm;text-align:left}
+      .final-player .print-puzzle{min-height:0}
+      .final-player .mission-box{padding:4mm;margin-top:3mm}
+      .final-player .print-buttons{margin-top:3mm;margin-bottom:3mm}
+      .final-player .story-title{height:9mm}
+      .parent-key{font-size:10.5pt}
+      .parent-key .sheet-head{padding-bottom:4mm;margin-bottom:4mm}
+      .parent-key .parent-box{padding:3.5mm;margin:2.5mm 0}
+      .parent-key .hint{margin:1.5mm 0;padding-left:3mm}
+      .parent-key .hint h3{margin:1.5mm 0 .5mm}
+      .parent-key .hint p{margin:1mm 0}
+      .parent-key .answer-table{margin:2mm 0}
+      .parent-key .answer-table th,.parent-key .answer-table td{padding:1.8mm 2.5mm}
+    }
+  </style>
+  <script>
+    const paperMode = new URLSearchParams(location.search).get('paper');
+    if (paperMode === 'a4') document.write('<style>@media print{@page{size:A4;margin:11mm}}</style>');
+    if (paperMode === 'letter') document.write('<style>@media print{@page{size:Letter;margin:11mm}}</style>');
+  </script>
+</head>
+<body>
+  <main class="screen">
+    <header class="hero">
+      <p class="kicker">A short original space puzzle</p>
+      <h1>Lost Moon Key</h1>
+      <p class="subtitle">The Moon Library's story-box key is missing. Solve four clues, enter the four-digit code, and send tonight's story into the sky.</p>
+    </header>
+    <nav class="toolbar" aria-label="Print tools">
+      <button class="btn" onclick="printPack('players')">Print player pages / 플레이어용 인쇄</button>
+      <button class="btn" onclick="printPack('parents')">Print parent guide / 보호자용 인쇄</button>
+      <button class="btn" onclick="resetGame()">Restart / 다시 시작</button>
+    </nav>
+    <nav class="toolbar" aria-label="PDF files">
+      <a class="btn" href="players-quick.pdf">English Quick Play · 1 page</a>
+      <a class="btn" href="parents.pdf">Parent guide · 2 pages / 보호자 안내</a>
+      <a class="btn" href="players.pdf">Full player PDF · 3 pages / 전체 플레이어판</a>
+    </nav>
+    <p class="ko">Quick Play is English only and uses one sheet plus a pencil. The full player PDF is the original Korean + English edition. Keep the parent guide with the grown-up. / 한 장판은 영어 전용이며, 전체판은 기존 한영 병기판입니다. 보호자 안내는 어른이 보관하세요.</p>
+    <section class="intro">
+      <span class="label">Mission / 미션</span>
+      <p>Every night, the Moon Library sends one bedtime story into the sky. Tonight, the key to the story box is gone. Solve the four clues in order. Each clue gives one digit. Put the digits together to open the box.</p>
+      <p class="ko">매일 밤 달 도서관은 잠자리 이야기를 하나씩 하늘로 보냅니다. 그런데 오늘은 이야기 상자의 열쇠가 사라졌어요. 네 단서를 순서대로 풀어 한 자리 숫자를 하나씩 찾고, 네 숫자를 이어 상자를 여세요.</p>
+    </section>
+    <form id="game" novalidate>
+      <section class="puzzle"><span class="label">Clue 1</span><h2>Star Shelf <span class="ko">/ 별 선반</span></h2><p>Count only the stars. <span class="ko">별만 세세요.</span></p><div class="clue" aria-label="star circle star star triangle star circle star star star">★ ● ★ ★ ▲ ★ ● ★ ★ ★</div><label class="answer-row">Digit / 숫자 <input id="a1" inputmode="numeric" maxlength="1" aria-label="Answer to clue 1"><small>one digit / 한 자리</small></label></section>
+      <section class="puzzle"><span class="label">Clue 2</span><h2>Lamp Pattern <span class="ko">/ 등불 규칙</span></h2><p>What comes next? Use CIRCLE = 1, MOON = 2, STAR = 3. <span class="ko">다음 등불은 무엇일까요? 번호를 쓰세요.</span></p><div class="clue pattern">CIRCLE → MOON → STAR → CIRCLE → MOON → ?</div><label class="answer-row">Digit / 숫자 <input id="a2" inputmode="numeric" maxlength="1" aria-label="Answer to clue 2"><small>one digit / 한 자리</small></label></section>
+      <section class="puzzle"><span class="label">Clue 3</span><h2>Story Calendar <span class="ko">/ 이야기 달력</span></h2><p>The story arrives the day right after Wednesday. Find that day's number. <span class="ko">이야기는 수요일 바로 다음 날 도착해요. 그날의 숫자를 찾으세요.</span></p><div class="week"><div class="day"><b>1</b>MON<br>월</div><div class="day"><b>2</b>TUE<br>화</div><div class="day"><b>3</b>WED<br>수</div><div class="day"><b>4</b>THU<br>목</div><div class="day"><b>5</b>FRI<br>금</div></div><label class="answer-row">Digit / 숫자 <input id="a3" inputmode="numeric" maxlength="1" aria-label="Answer to clue 3"><small>one digit / 한 자리</small></label></section>
+      <section class="puzzle"><span class="label">Clue 4</span><h2>Ready Buttons <span class="ko">/ 준비 단추</span></h2><p>There are four buttons. Two need cleaning. How many are ready? <span class="ko">단추 네 개 중 두 개는 청소가 필요해요. 준비된 단추는 몇 개일까요?</span></p><div class="buttons"><div class="status">READY<br>준비</div><div class="status clean">CLEAN<br>청소</div><div class="status">READY<br>준비</div><div class="status clean">CLEAN<br>청소</div></div><label class="answer-row">Digit / 숫자 <input id="a4" inputmode="numeric" maxlength="1" aria-label="Answer to clue 4"><small>one digit / 한 자리</small></label></section>
+      <section class="finish"><span class="label">Story Box</span><h2>Enter the four digits in clue order. <span class="ko">단서 순서대로 네 숫자를 입력하세요.</span></h2><div class="code-row"><input id="c1" inputmode="numeric" maxlength="1" aria-label="Code digit 1"><input id="c2" inputmode="numeric" maxlength="1" aria-label="Code digit 2"><input id="c3" inputmode="numeric" maxlength="1" aria-label="Code digit 3"><input id="c4" inputmode="numeric" maxlength="1" aria-label="Code digit 4"></div><button class="btn primary" type="submit">Open the box / 상자 열기</button><p id="feedback" role="status" aria-live="polite"></p><div id="ending" class="ending"><h2>Moon Library ready. Let's begin tonight's story.</h2><p class="ko">달 도서관 준비 완료! 오늘 이야기를 시작하자.</p><label>Our story title / 우리가 지은 이야기 제목<input class="story-line" aria-label="Story title"></label></div></section>
+    </form>
+    <footer>Lost Moon Key · Home or one directly hosted group/class · Digital files only</footer>
+  </main>
+
+  <section id="players-print" class="print-pack" aria-label="Player print pack">
+    <article class="sheet"><header class="sheet-head"><div><p class="kicker">Player pages / 플레이어용</p><h1>Lost Moon Key</h1></div><div class="moonmark">☾</div></header><div class="mission-box"><h2>Mission / 미션</h2><p>Every night, the Moon Library sends one bedtime story into the sky. Tonight, the key to the story box is gone. Solve the four clues in order. Each clue gives one digit. Put the digits together to open the box.</p><p class="ko">매일 밤 달 도서관은 잠자리 이야기를 하나씩 하늘로 보냅니다. 오늘은 이야기 상자의 열쇠가 사라졌어요. 네 단서를 순서대로 풀어 한 자리 숫자를 하나씩 찾고, 네 숫자를 이어 상자를 여세요.</p></div><div class="print-puzzle"><span class="label">Clue 1</span><h2>Star Shelf / 별 선반</h2><p>Count only the stars. / 별만 세세요.</p><div class="print-clue">★ ● ★ ★ ▲ ★ ● ★ ★ ★</div><p><b>My digit / 내가 찾은 숫자</b><span class="write-box"></span></p></div><p class="page-no">PLAYER 1 / 3</p></article>
+    <article class="sheet"><header class="sheet-head"><div><p class="kicker">Lost Moon Key</p><h1>Clues 2 + 3</h1></div><div class="moonmark">★</div></header><div class="print-puzzle"><span class="label">Clue 2</span><h2>Lamp Pattern / 등불 규칙</h2><p>What comes next? Use CIRCLE = 1, MOON = 2, STAR = 3.</p><p class="ko">다음 등불은 무엇일까요? CIRCLE은 1, MOON은 2, STAR는 3입니다.</p><div class="print-clue print-pattern">CIRCLE → MOON → STAR → CIRCLE → MOON → ?</div><p><b>My digit / 내가 찾은 숫자</b><span class="write-box"></span></p></div><div class="print-puzzle"><span class="label">Clue 3</span><h2>Story Calendar / 이야기 달력</h2><p>The story arrives the day right after Wednesday. Find that day's number.</p><p class="ko">이야기는 수요일 바로 다음 날 도착해요. 그날의 숫자를 찾으세요.</p><div class="print-week"><div class="print-day"><b>1</b>MON / 월</div><div class="print-day"><b>2</b>TUE / 화</div><div class="print-day"><b>3</b>WED / 수</div><div class="print-day"><b>4</b>THU / 목</div><div class="print-day"><b>5</b>FRI / 금</div></div><p><b>My digit / 내가 찾은 숫자</b><span class="write-box"></span></p></div><p class="page-no">PLAYER 2 / 3</p></article>
+    <article class="sheet final-player"><header class="sheet-head"><div><p class="kicker">Lost Moon Key</p><h1>Final Clue + Story Box</h1></div><div class="moonmark">☾</div></header><div class="print-puzzle"><span class="label">Clue 4</span><h2>Ready Buttons / 준비 단추</h2><p>There are four buttons. Two need cleaning. How many are ready?</p><p class="ko">단추 네 개 중 두 개는 청소가 필요해요. 준비된 단추는 몇 개일까요?</p><div class="print-buttons"><div class="print-status">READY<br>준비</div><div class="print-status clean">CLEAN<br>청소</div><div class="print-status">READY<br>준비</div><div class="print-status clean">CLEAN<br>청소</div></div><p><b>My digit / 내가 찾은 숫자</b><span class="write-box"></span></p></div><div class="mission-box"><h2>Story Box / 이야기 상자</h2><p>Write the four digits in clue order. / 단서 순서대로 네 숫자를 쓰세요.</p><div class="answer-strip"><div class="answer-square"></div><div class="answer-square"></div><div class="answer-square"></div><div class="answer-square"></div></div><h3>When the box opens / 상자가 열리면</h3><p><b>Moon Library ready. Let's begin tonight's story.</b></p><p class="ko">달 도서관 준비 완료! 오늘 이야기를 시작하자.</p><p>Give your story a title together. / 함께 이야기 제목을 지어 보세요.</p><div class="story-title"></div></div><p class="page-no">PLAYER 3 / 3</p></article>
+  </section>
+
+  <section id="parents-print" class="print-pack" aria-label="Parent guide">
+    <article class="sheet"><header class="sheet-head"><div><p class="kicker">Parent guide / 보호자 안내</p><h1>Lost Moon Key</h1></div><div class="moonmark">☾</div></header><div class="parent-box"><h2>Prepare / 준비</h2><p><b>Paper and a pencil only.</b> No lock, timer, or special props are needed.</p><p class="ko"><b>종이와 연필만 준비하세요.</b> 자물쇠, 타이머, 특별한 소품은 필요하지 않습니다.</p></div><div class="parent-box"><h2>How to host / 진행 방법</h2><p>Give the player pages only. Ask the player to solve the four clues in order and write one digit for each clue. Put the four digits together for the final code.</p><p class="ko">플레이어용 페이지만 건네세요. 네 문제를 순서대로 풀어 각 문제에서 한 자리 숫자를 찾고, 마지막에 네 숫자를 이어 암호를 만들게 합니다.</p><p>Read a hint aloud whenever it helps. There is no penalty for using hints.</p><p class="ko">필요하면 언제든 힌트를 읽어 주세요. 힌트를 써도 벌칙은 없습니다.</p></div><div class="parent-box"><h2>Use terms / 사용 조건</h2><p>The purchaser may print and use this file at home or in one group or class they directly host. The original file may not be redistributed or resold.</p><p class="ko">구매자는 가정 또는 직접 여는 모임/수업 한 곳에서 인쇄해 사용할 수 있습니다. 원본 파일의 재배포와 재판매는 허용되지 않습니다.</p><p><b>Digital files only. No physical item or gift is included.</b></p><p class="ko"><b>디지털 파일만 제공되며 실물이나 선물은 포함되지 않습니다.</b></p></div><p class="page-no">PARENT 1 / 2</p></article>
+    <article class="sheet parent-key"><header class="sheet-head"><div><p class="kicker">Parent guide / 보호자 안내</p><h1>Hints + Answer Key</h1></div><div class="moonmark">★</div></header><div class="parent-box"><h2>Two-step hints / 두 단계 힌트</h2><div class="hint"><h3>1. Star Shelf / 별 선반</h3><p>Ignore the other shapes. / 다른 도형은 무시하세요.</p><p>Point to each star one at a time. / 별을 하나씩 짚어 보세요.</p></div><div class="hint"><h3>2. Lamp Pattern / 등불 규칙</h3><p>Compare the first three lamps with the repeat. / 처음 세 등불과 다음 반복을 비교하세요.</p><p>After MOON comes STAR. What is STAR's number? / MOON 다음은 STAR예요. STAR의 번호는 무엇일까요?</p></div><div class="hint"><h3>3. Story Calendar / 이야기 달력</h3><p>Move one day after Wednesday. / 수요일에서 하루 뒤로 가세요.</p><p>Find Thursday. / 목요일을 찾으세요.</p></div><div class="hint"><h3>4. Ready Buttons / 준비 단추</h3><p>Leave out the two that need cleaning. / 청소가 필요한 두 개는 빼세요.</p><p>Calculate 4 - 2. / 4 - 2를 계산하세요.</p></div></div><div class="parent-box"><h2>Answer key / 정답표</h2><table class="answer-table"><thead><tr><th>Clue</th><th>Digit</th></tr></thead><tbody><tr><td>1. Star Shelf</td><td><b>7</b></td></tr><tr><td>2. Lamp Pattern</td><td><b>3</b></td></tr><tr><td>3. Story Calendar</td><td><b>4</b></td></tr><tr><td>4. Ready Buttons</td><td><b>2</b></td></tr><tr><td><b>Final code / 최종 암호</b></td><td><b>7342</b></td></tr></tbody></table></div><p class="page-no">PARENT 2 / 2</p></article>
+  </section>
+  <script>
+    const ids = ['a1','a2','a3','a4','c1','c2','c3','c4'];
+    for (const id of ids) document.getElementById(id).addEventListener('input', e => e.target.value = e.target.value.replace(/\D/g,'').slice(0,1));
+    document.getElementById('game').addEventListener('submit', e => {
+      e.preventDefault();
+      const clues = ['a1','a2','a3','a4'].map(id => document.getElementById(id).value).join('');
+      const code = ['c1','c2','c3','c4'].map(id => document.getElementById(id).value).join('');
+      const feedback = document.getElementById('feedback');
+      const ending = document.getElementById('ending');
+      ending.classList.remove('show');
+      if (clues.length !== 4 || code.length !== 4) { feedback.className='bad'; feedback.textContent='Complete every clue and all four code boxes. / 모든 문제와 네 암호 칸을 채워 주세요.'; return; }
+      if (clues === '7342' && code === '7342') { feedback.className='ok'; feedback.textContent='The story box is open! / 이야기 상자가 열렸어요!'; ending.classList.add('show'); }
+      else { feedback.className='bad'; feedback.textContent='The box is still closed. Check each clue and try again. / 아직 상자가 닫혀 있어요. 단서를 다시 확인해 보세요.'; }
+    });
+    function resetGame(){ document.getElementById('game').reset(); document.getElementById('feedback').textContent=''; document.getElementById('feedback').className=''; document.getElementById('ending').classList.remove('show'); scrollTo({top:0,behavior:'smooth'}); }
+    function printPack(kind){ const url=new URL(location.href); url.searchParams.set('print',kind); const w=open(url,'_blank'); if(w) w.addEventListener('load',()=>setTimeout(()=>w.print(),250),{once:true}); }
+  </script>
+</body>
+</html>
