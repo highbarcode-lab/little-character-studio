@@ -31,7 +31,8 @@
 <button type="button" class="right" id="right" aria-label="오른쪽으로 이동">→</button>
 </div>
 <p class="tip">옆 칸 누르기 / 방향키로 이동 · 막힌 이동은 물을 쓰지 않아요.</p>
-<div class="actions"><button type="button" id="undo">한 걸음 되돌리기</button><button type="button" id="reset">이 정원 다시 시작</button><button type="button" id="next" hidden>다음 정원 →</button></div>
+<div class="actions"><button type="button" id="undo">한 걸음 되돌리기</button><button type="button" id="reset">이 정원 다시 시작</button><button type="button" id="hint">한 걸음 힌트</button><button type="button" id="next" hidden>다음 정원 →</button></div>
+<p id="hint-message" class="tip" role="status" aria-live="polite" aria-atomic="true"></p>
 <details><summary lang="en">English rules</summary><p lang="en">Move the cloud one square up, down, left or right. Each valid move uses one drop. Visit every sprout to make it bloom; rocks block the way. Revisited flowers use a drop too. Undo restores your last move, even after running dry or finishing. Choose any garden above; there is no timer.</p></details>
 <footer>세 개의 작은 정원을 천천히 풀어 보세요. 설치·가입 없이 실행되며, 진행 상황은 저장하지 않습니다.<p><a href="../#free-resources">무료 체험 모음으로 돌아가기</a></p></footer>
 </main>
@@ -64,11 +65,51 @@ function makeGame(level=0) {
  let state=createState(level),history=[];
  return {
   state:()=>({...state}), historyLength:()=>history.length,
+  historySnapshot:()=>history.map(previous=>({...previous})),
   move(dx,dy){const result=transition(state,dx,dy);if(result.changed){history.push(state);state=result.state;}return {...result,state:{...state}};},
   undo(){if(!history.length)return false;state=history.pop();return true;},
   reset(){state=createState(state.level);history=[];},
   selectLevel(level){const next=createState(level);state=next;history=[];}
  };
+}
+// Read-only advice with one shared budget and memo per request.
+function recoveryHint(state,history=[],limit=10000){
+ let visited=0;
+ const unknown=()=>({kind:'unknown',visited});
+ function valid(s){
+  if(!s||typeof s!=='object'||!Number.isInteger(s.level)||s.level<0||s.level>=LEVELS.length)return false;
+  const map=LEVELS[s.level],mask=(1<<map.targets.length)-1;
+  return ['x','y','water','bloom','moves'].every(key=>Number.isInteger(s[key]))&&s.x>=0&&s.x<5&&s.y>=0&&s.y<5&&!map.rocks.some(p=>p[0]===s.x&&p[1]===s.y)&&s.water>=0&&s.water<=map.water&&s.water<=9&&s.moves>=0&&s.moves+s.water===map.water&&s.bloom>=0&&s.bloom<=mask&&s.phase===(s.bloom===mask?'won':s.water===0?'dry':'playing');
+ }
+ if(!Number.isInteger(limit)||limit<0||limit>10000||!valid(state)||!Array.isArray(history)||history.length!==state.moves||history.length>9)return unknown();
+ const current={...state},past=history.map(s=>({...s}));
+ if(past.some((s,i)=>!valid(s)||s.level!==current.level||s.moves!==i))return unknown();
+ if(current.phase==='won')return {kind:'won',visited};
+ const memo=new Map(),directions=[[1,0,'오른쪽'],[0,1,'아래쪽'],[-1,0,'왼쪽'],[0,-1,'위쪽']];
+ function solve(s){
+  const key=[s.level,s.x,s.y,s.water,s.bloom].join(':');
+  if(memo.has(key))return memo.get(key);
+  if(visited>=limit)return {status:'unknown'};
+  visited++;
+  if(s.phase==='won'){const result={status:'solved',direction:null};memo.set(key,result);return result;}
+  if(s.water===0||s.phase==='dry'){const result={status:'dead'};memo.set(key,result);return result;}
+  for(const direction of directions){
+   const step=transition(s,direction[0],direction[1]);if(!step.changed)continue;
+   const child=solve(step.state);
+   if(child.status==='unknown')return child;
+   if(child.status==='solved'){const result={status:'solved',direction};memo.set(key,result);return result;}
+  }
+  const result={status:'dead'};memo.set(key,result);return result;
+ }
+ const result=solve(current);
+ if(result.status==='unknown')return unknown();
+ if(result.status==='solved')return {kind:'move',dx:result.direction[0],dy:result.direction[1],direction:result.direction[2],visited};
+ for(let i=past.length-1;i>=0;i--){
+  const previous=solve(past[i]);
+  if(previous.status==='unknown')return unknown();
+  if(previous.status==='solved')return {kind:'undo',count:past.length-i,visited};
+ }
+ return {kind:'restart',visited};
 }
 const RainGardenEngine = {LEVELS,createState,transition,makeGame};
 /* UI */
@@ -90,6 +131,7 @@ for(let y=0;y<5;y++)for(let x=0;x<5;x++){
 }
 const messages={adjacent:'구름 바로 옆의 한 칸을 골라 주세요.',edge:'정원 밖으로는 갈 수 없어요. 물방울은 그대로예요.',rock:'돌이 길을 막고 있어요. 돌아가는 길을 찾아보세요.',dry:'물방울이 모두 떨어졌어요. 한 걸음 되돌려 다른 길을 골라 보세요.',won:'이미 모든 꽃이 피었어요. 되돌리거나 다른 정원을 골라 보세요.'};
 function render(feedback=''){
+ byId('hint-message').textContent='';
  const state=game.state(),map=LEVELS[state.level];
  byId('stage-title').textContent=(state.level+1)+' / 3 · '+map.name;
  byId('water').textContent='물방울 '+state.water;
@@ -109,6 +151,11 @@ function render(feedback=''){
 }
 function move(dx,dy){const result=game.move(dx,dy);render(result.changed?'':messages[result.reason]);}
 [['up',0,-1],['down',0,1],['left',-1,0],['right',1,0]].forEach(([id,dx,dy])=>byId(id).addEventListener('click',()=>move(dx,dy)));
+byId('hint').addEventListener('click',()=>{
+ const advice=recoveryHint(game.state(),game.historySnapshot());
+ const text=advice.kind==='move'?'한 걸음: '+advice.direction+'으로 이동해 보세요.':advice.kind==='undo'?'한 걸음 되돌리기를 '+advice.count+'번 눌러 보세요. 그 뒤 힌트를 다시 선택할 수 있어요.':advice.kind==='won'?'모든 꽃이 피었어요. 다음 정원을 고르거나 꽃을 바라보세요.':advice.kind==='restart'?'이어갈 경로를 찾지 못했어요. 이 정원을 다시 시작해 보세요.':'힌트를 계산하지 못했어요. 직접 다른 길을 골라 보세요.';
+ byId('hint-message').textContent=text;
+});
 byId('undo').addEventListener('click',()=>{if(game.undo())render('한 걸음 전으로 돌아왔어요. 물방울과 꽃도 함께 돌아왔어요.');});
 byId('reset').addEventListener('click',()=>{game.reset();render('이 정원을 처음부터 다시 시작했어요.');});
 LEVELS.forEach((_,i)=>byId('level-'+i).addEventListener('click',()=>{game.selectLevel(i);render();}));
