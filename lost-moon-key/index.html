@@ -114,6 +114,11 @@
     if (paperMode === 'a4') document.write('<style>@media print{@page{size:A4;margin:11mm}}</style>');
     if (paperMode === 'letter') document.write('<style>@media print{@page{size:Letter;margin:11mm}}</style>');
   </script>
+<!-- MOON-DUO-STYLE-BEGIN -->
+<style>
+#moon-duo{margin-top:30px}#moon-duo [hidden]{display:none!important}#moon-duo button:focus-visible,#moon-duo input:focus-visible{outline:3px solid #8a5e00;outline-offset:3px}#moon-duo .duo-actions{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}#moon-duo .duo-actions button{max-width:100%;white-space:normal}#moon-duo .duo-clue{border:2px dashed var(--line);border-radius:12px;padding:16px;margin:16px 0}#moon-duo .duo-lamps{padding-left:22px}#moon-duo .duo-lamps li{margin:12px 0}#moon-duo fieldset{min-width:0;border:2px solid var(--line);border-radius:12px;padding:12px}#moon-duo .duo-keys{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}#moon-duo .duo-key{display:block;border:2px solid var(--line);border-radius:10px;padding:12px;overflow-wrap:anywhere}#moon-duo .duo-key:has(input:checked){border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}#moon-duo .duo-key input{width:20px;height:20px;margin:0 8px 8px 0;vertical-align:middle}#moon-duo .duo-key b{display:block}#moon-duo .duo-swatch{display:inline-block;width:20px;height:20px;border:1px solid #111827;vertical-align:middle}#moon-duo .duo-blue{background:#426bba}#moon-duo .duo-yellow{background:#edc851}#moon-duo .duo-violet{background:#9674c3}#moon-duo-status{min-height:3em;font-weight:700}#moon-duo-ending{border:3px double var(--accent);border-radius:12px;background:var(--soft);padding:18px;margin-top:18px}@media(max-width:560px){#moon-duo .duo-keys{grid-template-columns:repeat(2,minmax(0,1fr))}#moon-duo{padding:16px}}@media print{#moon-duo{display:none!important}}
+</style>
+<!-- MOON-DUO-STYLE-END -->
 </head>
 <body>
   <main class="screen">
@@ -145,6 +150,44 @@
       <section class="puzzle"><span class="label">Clue 4</span><h2>Ready Buttons <span class="ko">/ 준비 단추</span></h2><p>There are four buttons. Two need cleaning. How many are ready? <span class="ko">단추 네 개 중 두 개는 청소가 필요해요. 준비된 단추는 몇 개일까요?</span></p><div class="buttons"><div class="status">READY<br>준비</div><div class="status clean">CLEAN<br>청소</div><div class="status">READY<br>준비</div><div class="status clean">CLEAN<br>청소</div></div><label class="answer-row">Digit / 숫자 <input id="a4" inputmode="numeric" maxlength="1" aria-label="Answer to clue 4"><small>one digit / 한 자리</small></label></section>
       <section class="finish"><span class="label">Story Box</span><h2>Enter the four digits in clue order. <span class="ko">단서 순서대로 네 숫자를 입력하세요.</span></h2><div class="code-row"><input id="c1" inputmode="numeric" maxlength="1" aria-label="Code digit 1"><input id="c2" inputmode="numeric" maxlength="1" aria-label="Code digit 2"><input id="c3" inputmode="numeric" maxlength="1" aria-label="Code digit 3"><input id="c4" inputmode="numeric" maxlength="1" aria-label="Code digit 4"></div><button class="btn primary" type="submit">Open the box / 상자 열기</button><p id="feedback" role="status" aria-live="polite"></p><div id="ending" class="ending"><h2>Moon Library ready. Let's begin tonight's story.</h2><p class="ko">달 도서관 준비 완료! 오늘 이야기를 시작하자.</p><label>Our story title / 우리가 지은 이야기 제목<input class="story-line" aria-label="Story title"></label></div></section>
     </form>
+<!-- MOON-DUO-ROOM-BEGIN -->
+    <section class="puzzle" id="moon-duo" lang="ko" aria-labelledby="moon-duo-title">
+      <span class="label">Two observers · Fixed room v1</span>
+      <h2 id="moon-duo-title">두 관측자의 달 서고</h2>
+      <p>한 명은 <b>별지기</b>로 등불을 살피고, 다른 한 명은 <b>기록지기</b>로 서고 규칙을 읽어요. 어른·아이 대신 하고 싶은 역할을 나누세요. 두 관측을 말로 합쳐 아홉 열쇠 중 하나를 고릅니다.</p>
+      <p class="ko">한 기기를 번갈아 보며 같은 고정 방 v1을 함께 풀어요. 역할을 볼 때 상대는 화면을 보지 않고, 중립 인계 화면에서 기기를 건네세요. 화면 구분은 놀이 규칙이며 비밀을 보장하는 보안 기능은 아닙니다. 설치·인쇄·타이머·특별한 준비물은 필요 없습니다.</p>
+      <p class="ko">원래 네 숫자 문제와 별개의 방입니다. 위 보호자 정답·기존 PDF·인쇄판에는 이 방이 들어 있지 않습니다. 이미 답을 안다면 같은 고정 퍼즐에서 새 답을 기대할 수 없습니다.</p>
+      <div id="moon-duo-neutral">
+        <h3 id="moon-duo-neutral-title" tabindex="-1">중립 인계 화면</h3>
+        <p>단서를 가렸습니다. 기기를 건네고, 맡은 역할만 열어 보세요. 각자 알아낸 색·수와 해석 규칙을 말로 나누세요.</p>
+        <div class="duo-actions"><button class="btn" id="moon-duo-star" type="button">별지기 단서 열기</button><button class="btn" id="moon-duo-record" type="button">기록지기 단서 열기</button><button class="btn primary" id="moon-duo-table" type="button">함께 열쇠 고르기</button></div>
+      </div>
+      <div id="moon-duo-star-panel" hidden>
+        <h3 id="moon-duo-star-title" tabindex="-1">별지기의 관측</h3>
+        <p>등불 색은 같은 세 색 순서가 반복됩니다. 다음 칸의 색을 알아내세요.</p>
+        <div class="duo-clue"><span data-duo-color="blue">파랑</span> → <span data-duo-color="yellow">노랑</span> → <span data-duo-color="violet">보라</span> → <span data-duo-color="blue">파랑</span> → <span data-duo-color="yellow">노랑</span> → ?</div>
+        <p>아래에서 <b>준비됨</b>만 세세요. 도형과 청소 중인 등불에 속지 마세요.</p>
+        <ul class="duo-lamps"><li data-duo-ready="true">★ 별 등불 — 준비됨</li><li data-duo-ready="false">☾ 달 등불 — 청소 중</li><li data-duo-ready="true">★ 별 등불 — 준비됨</li><li data-duo-ready="true">● 원 등불 — 준비됨</li><li data-duo-ready="false">★ 별 등불 — 청소 중</li></ul>
+        <p class="ko">다음 색과 준비된 수를 기록지기에게 말해 주세요. 열쇠 도형으로 바꾸는 규칙은 이 관측대에 없습니다.</p>
+      </div>
+      <div id="moon-duo-record-panel" hidden>
+        <h3 id="moon-duo-record-title" tabindex="-1">기록지기의 해석</h3>
+        <p>서고의 기록을 읽고 별지기가 전한 <b>준비된 등불 수</b>를 열쇠 도형으로 바꾸세요. 등불에 그려진 도형을 그대로 고르는 규칙이 아닙니다.</p>
+        <div class="duo-clue"><p data-duo-rule="zero" data-duo-shape="star"><b>하나도 준비되지 않음 → ★ 별</b></p><p data-duo-rule="even" data-duo-shape="circle"><b>둘씩 짝지어 남지 않음 → ● 원</b></p><p data-duo-rule="odd" data-duo-shape="moon"><b>둘씩 짝지으면 하나 남음 → ☾ 달</b></p></div>
+        <p class="ko">수와 짝짓기 규칙을 함께 해석하세요. 실제 등불 색과 준비된 수는 이 기록대에서 보이지 않습니다. 별지기에게 물어보세요.</p>
+      </div>
+      <button class="btn" id="moon-duo-handoff" type="button" hidden>단서 가리고 기기 건네기</button>
+      <div id="moon-duo-table-panel" hidden>
+        <h3 id="moon-duo-table-title" tabindex="-1">함께 고르는 열쇠</h3>
+        <p>별지기가 찾은 다음 색, 두 사람이 등불 수를 규칙에 맞춰 해석한 도형을 합쳐 고르세요. 역할 단서를 다시 볼 때는 중립 화면에서 돌아갑니다.</p>
+        <fieldset><legend>색 이름 + 도형 이름으로 열쇠 하나 선택</legend><div class="duo-keys"><label class="duo-key"><input type="radio" name="moon-duo-key" value="blue-circle"><span class="duo-swatch duo-blue" aria-hidden="true"></span><b>파랑 · ● 원</b></label><label class="duo-key"><input type="radio" name="moon-duo-key" value="blue-moon"><span class="duo-swatch duo-blue" aria-hidden="true"></span><b>파랑 · ☾ 달</b></label><label class="duo-key"><input type="radio" name="moon-duo-key" value="blue-star"><span class="duo-swatch duo-blue" aria-hidden="true"></span><b>파랑 · ★ 별</b></label><label class="duo-key"><input type="radio" name="moon-duo-key" value="yellow-circle"><span class="duo-swatch duo-yellow" aria-hidden="true"></span><b>노랑 · ● 원</b></label><label class="duo-key"><input type="radio" name="moon-duo-key" value="yellow-moon"><span class="duo-swatch duo-yellow" aria-hidden="true"></span><b>노랑 · ☾ 달</b></label><label class="duo-key"><input type="radio" name="moon-duo-key" value="yellow-star"><span class="duo-swatch duo-yellow" aria-hidden="true"></span><b>노랑 · ★ 별</b></label><label class="duo-key"><input type="radio" name="moon-duo-key" value="violet-circle"><span class="duo-swatch duo-violet" aria-hidden="true"></span><b>보라 · ● 원</b></label><label class="duo-key"><input type="radio" name="moon-duo-key" value="violet-moon"><span class="duo-swatch duo-violet" aria-hidden="true"></span><b>보라 · ☾ 달</b></label><label class="duo-key"><input type="radio" name="moon-duo-key" value="violet-star"><span class="duo-swatch duo-violet" aria-hidden="true"></span><b>보라 · ★ 별</b></label></div></fieldset>
+        <div class="duo-actions"><button class="btn primary" id="moon-duo-check" type="button">이 열쇠로 서고 열기</button><button class="btn" id="moon-duo-return" type="button">중립 화면에서 단서 다시 보기</button></div>
+      </div>
+      <p id="moon-duo-status" role="status" aria-live="polite">두 역할의 단서를 나눠 읽고, 서로 알아낸 것을 말해 주세요.</p>
+      <div id="moon-duo-ending" hidden><h3>두 관측이 한 이야기를 열었어요</h3><p>보라빛 달 열쇠가 서고 문에 꼭 맞습니다. 별지기의 관측과 기록지기의 해석이 만나, 닫혀 있던 달 도서관의 작은 창이 열렸어요.</p><p>창가에서 잠들었던 이야기가 두 사람에게 속삭입니다. “하늘을 본 사람과 기록을 읽은 사람이 함께 와 주었구나. 오늘의 첫 문장을 같이 시작해 볼래?”</p></div>
+      <button class="btn" id="moon-duo-reset" type="button">이 협동 방만 다시 시작</button>
+    </section>
+<!-- MOON-DUO-ROOM-END -->
     <footer>Lost Moon Key · Home or one directly hosted group/class · Digital files only</footer>
   </main>
 
@@ -175,5 +218,35 @@
     function resetGame(){ document.getElementById('game').reset(); document.getElementById('feedback').textContent=''; document.getElementById('feedback').className=''; document.getElementById('ending').classList.remove('show'); scrollTo({top:0,behavior:'smooth'}); }
     function printPack(kind){ const url=new URL(location.href); url.searchParams.set('print',kind); const w=open(url,'_blank'); if(w) w.addEventListener('load',()=>setTimeout(()=>w.print(),250),{once:true}); }
   </script>
+<!-- MOON-DUO-SCRIPT-BEGIN -->
+<script>
+(()=>{
+ 'use strict';
+ const byId=id=>document.getElementById('moon-duo-'+id);
+ const room=document.getElementById('moon-duo'),neutral=byId('neutral'),star=byId('star-panel'),record=byId('record-panel'),table=byId('table-panel'),handoff=byId('handoff'),status=byId('status'),ending=byId('ending');
+ const inputs=[...room.querySelectorAll('input[name="moon-duo-key"]')];
+ const observation={sequence:[...star.querySelectorAll('[data-duo-color]')].map(e=>e.dataset.duoColor),ready:[...star.querySelectorAll('[data-duo-ready]')].map(e=>e.dataset.duoReady==='true')};
+ const rules=Object.fromEntries([...record.querySelectorAll('[data-duo-rule]')].map(e=>[e.dataset.duoRule,e.dataset.duoShape]));
+ function solve(obs,map){const next=obs.sequence[obs.sequence.length%3],count=obs.ready.filter(Boolean).length;return next+'-'+map[count===0?'zero':count%2===0?'even':'odd'];}
+ const answer=solve(observation,rules);let seenStar=false,seenRecord=false,screen='neutral';
+ function show(next){screen=next;neutral.hidden=next!=='neutral';star.hidden=next!=='star';record.hidden=next!=='record';table.hidden=next!=='table';handoff.hidden=next!=='star'&&next!=='record';byId(next==='neutral'?'neutral-title':next==='star'?'star-title':next==='record'?'record-title':'table-title').focus();}
+ byId('star').addEventListener('click',()=>{if(screen!=='neutral')return;seenStar=true;show('star');status.textContent='별지기만 관측하세요. 준비된 수와 다음 색을 말로 공유한 뒤 단서를 가리세요.';});
+ byId('record').addEventListener('click',()=>{if(screen!=='neutral')return;seenRecord=true;show('record');status.textContent='기록지기만 읽으세요. 준비된 수를 도형으로 바꾸는 규칙을 해석해 공유하세요.';});
+ handoff.addEventListener('click',()=>{show('neutral');status.textContent='단서를 가렸습니다. 상대에게 기기를 건네고 역할을 선택하세요.';});
+ byId('table').addEventListener('click',()=>{if(screen!=='neutral')return;show('table');status.textContent='두 관측을 합쳐 색과 도형이 맞는 열쇠를 고르세요.';});
+ byId('return').addEventListener('click',()=>{show('neutral');status.textContent='선택한 열쇠는 유지됩니다. 두 단서를 다시 비교하세요.';});
+ byId('check').addEventListener('click',()=>{
+  if(screen!=='table')return;
+  ending.hidden=true;
+  const selected=inputs.find(e=>e.checked)?.value;
+  if(!seenStar||!seenRecord){status.textContent='아직 두 역할의 단서를 모두 읽지 않았습니다. 중립 화면에서 역할을 나눠 읽어 보세요.';return;}
+  if(!selected){status.textContent='색 이름과 도형을 함께 보고 열쇠 하나를 선택하세요.';return;}
+  if(selected!==answer){status.textContent='아직 문이 닫혀 있어요. 선택과 본 단서는 유지됩니다. 다음 색과 준비된 수의 해석을 다시 비교하세요.';return;}
+  ending.hidden=false;status.textContent='두 관측을 합친 열쇠로 서고가 열렸습니다.';
+ });
+ byId('reset').addEventListener('click',()=>{seenStar=false;seenRecord=false;inputs.forEach(e=>e.checked=false);ending.hidden=true;show('neutral');status.textContent='이 협동 방만 다시 시작했습니다. 두 역할의 단서를 나눠 읽으세요.';});
+})();
+</script>
+<!-- MOON-DUO-SCRIPT-END -->
 </body>
 </html>
