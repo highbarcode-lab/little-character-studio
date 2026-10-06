@@ -167,6 +167,15 @@
       <p class="ko"><span data-duo-i18n="8">한 기기를 번갈아 보며 현재 관측 판을 함께 풀어요. 역할을 볼 때 상대는 화면을 보지 않고, 중립 인계 화면에서 기기를 건네세요. 화면 구분은 놀이 규칙이며 비밀을 보장하는 보안 기능은 아닙니다. 설치·인쇄·타이머·특별한 준비물은 필요 없습니다.</span></p>
       <p class="ko"><span data-duo-i18n="9">원래 네 숫자 문제와 별개의 방입니다. 위 보호자 정답·기존 PDF·인쇄판에는 이 방이 들어 있지 않습니다. 첫 관측은 항상 같습니다. ‘현재 판 다시 시작’은 같은 단서를 유지하고, ‘새 관측으로 바꾸기’는 직전과 다른 정답의 관측·규칙 조합으로 바꿉니다. 조합은 제한되어 이후 반복될 수 있습니다.</span></p>
       <div id="moon-duo-neutral">
+<!-- DUO-RESTORE-UI-BEGIN -->
+        <div id="moon-duo-restore">
+          <label for="moon-duo-restore-files" id="moon-duo-restore-label">저장한 역할 TXT 두 장 선택</label>
+          <p id="moon-duo-restore-help">같은 관측 표시의 별지기·기록지기 TXT를 하나씩 선택하세요. KO/English 카드를 함께 사용할 수 있습니다. 파일당 4 KB까지이며 이 기기에서만 읽습니다. 복원 후 두 역할의 단서를 다시 읽어야 합니다. 저장·공유한 파일은 회수되지 않으며 관측 표시는 보안·고유성을 보장하지 않습니다.</p>
+          <input type="file" id="moon-duo-restore-files" accept=".txt,text/plain" multiple aria-describedby="moon-duo-restore-help" style="max-width:100%">
+          <button class="btn" type="button" id="moon-duo-restore-apply">두 카드로 관측 복원</button>
+          <p id="moon-duo-restore-status" role="status" aria-live="polite"></p>
+        </div>
+<!-- DUO-RESTORE-UI-END -->
         <h3 id="moon-duo-neutral-title" tabindex="-1"><span data-duo-i18n="10">중립 인계 화면</span></h3>
         <p><span data-duo-i18n="11">단서를 가렸습니다. 기기를 건네고, 맡은 역할만 열어 보세요. 각자 알아낸 색·수와 해석 규칙을 말로 나누세요.</span></p>
         <div class="duo-actions"><button class="btn" id="moon-duo-star" type="button"><span data-duo-i18n="12">별지기 단서 열기</span></button><button class="btn" id="moon-duo-record" type="button"><span data-duo-i18n="13">기록지기 단서 열기</span></button><button class="btn primary" id="moon-duo-table" type="button"><span data-duo-i18n="14">함께 열쇠 고르기</span></button></div>
@@ -262,7 +271,8 @@
  let duoLanguage='ko';
  const duoPhrases=[["두 관측자의 달 서고","The Moon Archive: Two Observers"],["한 명은","One player, the"],["로 등불을 살피고, 다른 한 명은"," observes the lamps. The other player, the"],["로 서고 규칙을 읽어요. 어른·아이 대신 하고 싶은 역할을 나누세요. 두 관측을 말로 합쳐 아홉 열쇠 중 하나를 고릅니다."," interprets the archive rules. Choose the roles you prefer, regardless of age. Talk through both clues to choose one of nine keys."],["한 기기를 번갈아 보며 현재 관측 판을 함께 풀어요. 역할을 볼 때 상대는 화면을 보지 않고, 중립 인계 화면에서 기기를 건네세요. 화면 구분은 놀이 규칙이며 비밀을 보장하는 보안 기능은 아닙니다. 설치·인쇄·타이머·특별한 준비물은 필요 없습니다.","Take turns using one device for the current observation. Keep the other player from viewing your role screen, then use the neutral handoff screen to pass the device. This is a play rule, not a security feature. No installation, printing, timer, or special props are required."],["원래 네 숫자 문제와 별개의 방입니다. 위 보호자 정답·기존 PDF·인쇄판에는 이 방이 들어 있지 않습니다. 첫 관측은 항상 같습니다. ‘현재 판 다시 시작’은 같은 단서를 유지하고, ‘새 관측으로 바꾸기’는 직전과 다른 정답의 관측·규칙 조합으로 바꿉니다. 조합은 제한되어 이후 반복될 수 있습니다.","This room is separate from the original four-digit puzzle and is not included in the parent answer key, PDFs, or print pages above. The first observation is always the same. Restart this observation keeps its clues; New observation changes the clues and rules to a different key from the previous round. The combinations are limited and may repeat later."],["중립 인계 화면","Neutral handoff screen"],["단서를 가렸습니다. 기기를 건네고, 맡은 역할만 열어 보세요. 각자 알아낸 색·수와 해석 규칙을 말로 나누세요.","The clues are hidden. Pass the device and open only your own role. Share the color, count, and interpretation rule by talking."],["별지기 단서 열기","Open Lamp Observer clues"],["기록지기 단서 열기","Open Record Keeper clues"],["함께 열쇠 고르기","Choose a key together"],["별지기의 관측","Lamp Observer observations"],["등불 색은 같은 세 색 순서가 반복됩니다. 다음 칸의 색을 알아내세요.","The lamp colors repeat in a cycle of three. Work out the next color."],["아래에서","Below, count only lamps marked"],["만 세세요. 도형과 청소 중인 등불에 속지 마세요.",". Ignore decorative shapes and lamps marked Needs cleaning."],["다음 색과 준비된 수를 기록지기에게 말해 주세요. 열쇠 도형으로 바꾸는 규칙은 이 관측대에 없습니다.","Tell the Record Keeper the next color and ready-lamp count. The rule that turns the count into a key shape is not shown here."],["기록지기의 해석","Record Keeper interpretation"],["서고의 기록을 읽고 별지기가 전한","Read the archive rules and interpret the"],["준비된 등불 수","ready-lamp count"],["를 열쇠 도형으로 바꾸세요. 등불에 그려진 도형을 그대로 고르는 규칙이 아닙니다."," reported by the Lamp Observer to find the key shape. Do not simply copy a decorative shape from a lamp."],["수와 짝짓기 규칙을 함께 해석하세요. 실제 등불 색과 준비된 수는 이 기록대에서 보이지 않습니다. 별지기에게 물어보세요.","Apply the pairing rule to the count. The actual lamp colors and ready-lamp count are not shown here. Ask the Lamp Observer."],["현재 역할 단서 카드","Current role clue card"],["관측 표시가 같은 두 카드를 사용하세요. 새 관측에서는 두 카드 모두 다시 준비하세요. 이미 저장·전달한 파일은 회수되지 않습니다. 파일 전달은 직접 하며 자동 전송·동기화는 없습니다. 최종 열쇠 선택은 원래 진행 기기에서 하세요.","Use two cards with matching observation labels. Prepare both cards again after a new observation. Saved or shared files cannot be recalled. Share the files yourself; there is no automatic sending or synchronization. Make the final key choice on the original game device."],["역할 단서 카드 준비","Prepare role clue card"],["현재 역할의 단서 · 읽기 전용 텍스트","Current role clues · Read-only text"],["역할 TXT 직접 저장","Save role TXT yourself"],["단서 가리고 기기 건네기","Hide clues and pass the device"],["함께 고르는 열쇠","Choose the key together"],["별지기가 찾은 다음 색, 두 사람이 등불 수를 규칙에 맞춰 해석한 도형을 합쳐 고르세요. 역할 단서를 다시 볼 때는 중립 화면에서 돌아갑니다.","Combine the next color observed by the Lamp Observer with the shape you interpret together from the lamp count and rules. Return through the neutral screen to review role clues."],["색 이름 + 도형 이름으로 열쇠 하나 선택","Choose one key by color name and shape name"],["이 열쇠로 서고 열기","Open the archive with this key"],["중립 화면에서 단서 다시 보기","Return to neutral to review clues"],["두 역할의 단서를 나눠 읽고, 서로 알아낸 것을 말해 주세요.","Read your separate role clues and tell each other what you found."],["두 관측이 한 이야기를 열었어요","Two observations opened one story"],["보라빛 달 열쇠가 서고 문에 꼭 맞습니다. 별지기의 관측과 기록지기의 해석이 만나, 닫혀 있던 달 도서관의 작은 창이 열렸어요.","The Violet Moon key fits the archive door. The Lamp Observer observations and Record Keeper interpretation combine to open a little window in the Moon Library."],["창가에서 잠들었던 이야기가 두 사람에게 속삭입니다. “하늘을 본 사람과 기록을 읽은 사람이 함께 와 주었구나. 오늘의 첫 문장을 같이 시작해 볼래?”","A story sleeping by the window whispers: “The observer and the reader have come together. Would you like to begin the first sentence together?”"],["현재 판 다시 시작","Restart this observation"],["새 관측으로 바꾸기","New observation"],["관측 표시는 비교용이며 고유성·보안을 보장하지 않습니다.","The observation label is for comparison, not a guarantee of uniqueness or security."],["같은 세 색 순서가 반복됩니다. 다음 색을 관측하세요.","Three colors repeat in a cycle. Work out the next color."],["준비됨만 세세요. 장식 도형을 열쇠 도형으로 그대로 고르지 마세요.","Count only Ready lamps. Do not copy a decorative lamp shape as the key shape."],["별지기가 말한 준비된 등불 수를 아래 규칙으로 해석하세요.","Interpret the ready-lamp count reported by the Lamp Observer using these rules."],["두 카드의 관측 표시가 같은지 확인하세요. 새 관측에서는 두 카드 모두 다시 준비하세요. 저장·전달한 파일은 회수되지 않습니다. 최종 열쇠는 원래 진행 기기에서 함께 고르세요.","Check that both cards have the same observation label. Prepare both cards again for a new observation. Saved or shared files cannot be recalled. Choose the final key together on the original game device."],["카드가 너무 큽니다. 파일을 준비하지 않았습니다.","The card is too large. No file was prepared."],["TXT 파일을 준비하지 못했습니다. 위 읽기 전용 텍스트를 선택해 직접 복사하세요.","The TXT file could not be prepared. Select the read-only text above and copy it yourself."],["현재 역할 카드가 준비됐습니다. TXT 저장 링크를 직접 누르세요. 실제 저장 완료는 다운로드에서 확인하세요.","Your current role card is ready. Choose the TXT save link yourself and check Downloads for the saved file."],["새 관측과 기록 규칙으로 바꿨습니다. 직전과 다른 열쇠입니다. 두 역할의 단서를 새로 읽으세요.","The observations and record rules have changed. The key differs from the previous round. Read both role clues again."],["별지기만 관측하세요. 준비된 수와 다음 색을 말로 공유한 뒤 단서를 가리세요.","Only the Lamp Observer should view this screen. Share the ready-lamp count and next color, then hide the clues."],["기록지기만 읽으세요. 준비된 수를 도형으로 바꾸는 규칙을 해석해 공유하세요.","Only the Record Keeper should view this screen. Interpret and share the rule that turns the ready-lamp count into a shape."],["단서를 가렸습니다. 상대에게 기기를 건네고 역할을 선택하세요.","The clues are hidden. Pass the device and choose a role."],["두 관측을 합쳐 색과 도형이 맞는 열쇠를 고르세요.","Combine both clues to choose the matching color and shape."],["선택한 열쇠는 유지됩니다. 두 단서를 다시 비교하세요.","Your selected key is kept. Compare the two clues again."],["아직 두 역할의 단서를 모두 읽지 않았습니다. 중립 화면에서 역할을 나눠 읽어 보세요.","Both role clues have not been viewed yet. Return to neutral and read your separate roles."],["색 이름과 도형을 함께 보고 열쇠 하나를 선택하세요.","Choose one key using both the color name and shape."],["아직 문이 닫혀 있어요. 선택과 본 단서는 유지됩니다. 다음 색과 준비된 수의 해석을 다시 비교하세요.","The door is still closed. Your selection and viewed clues are kept. Compare the next color with your interpretation of the ready-lamp count."],[" 열쇠가 서고 문에 꼭 맞습니다. 별지기의 관측과 기록지기의 해석이 만나, 닫혀 있던 달 도서관의 작은 창이 열렸어요."," key fits the archive door. The Lamp Observer observations and Record Keeper interpretation combine to open a little window in the Moon Library."],["두 관측을 합친 열쇠로 서고가 열렸습니다.","The archive opened with the key from your combined clues."],["현재 판의 관측과 규칙은 그대로입니다. 두 역할의 단서를 나눠 다시 읽으세요.","This observation and its rules are unchanged. Read your separate role clues again."],["하나도 준비되지 않음","Zero ready lamps (0)"],["하나 이상이며 둘씩 짝지어 남지 않음","A positive number of ready lamps, paired with none left (positive even)"],["둘씩 짝지으면 하나 남음","Ready lamps paired with one left (odd)"],["별지기","Lamp Observer"],["기록지기","Record Keeper"],["관측 표시:","Observation label:"],[" 단서 카드"," clue card"],[" 등불 — "," lamp — "],["준비됨","Ready"],["청소 중","Needs cleaning"],["파랑","Blue"],["노랑","Yellow"],["보라","Violet"],["● 원","● Circle"],["☾ 달","☾ Moon"],["★ 별","★ Star"],["협동 방 언어","Cooperative room language"]];
  const duoStatic=[...room.querySelectorAll('[data-duo-i18n]')].map(node=>({node,original:node.textContent}));
- function duoText(value){const list=duoPhrases.map(([ko,en])=>duoLanguage==='en'?[ko,en]:[en,ko]).sort((a,b)=>b[0].length-a[0].length);for(const [from,to]of list)value=value.split(from).join(to);return value;}
+ function duoText(value){return duoTextFor(value,duoLanguage);}
+ function duoTextFor(value,language){const list=duoPhrases.map(([ko,en])=>language==='en'?[ko,en]:[en,ko]).sort((a,b)=>b[0].length-a[0].length);for(const [from,to]of list)value=value.split(from).join(to);return value;}
  function localizeClues(){colorNodes.forEach((node,i)=>node.textContent=duoText(colors[observation.sequence[i]]));lampNodes.forEach((node,i)=>node.textContent=duoText(shapes[lampShapes[i]]+' 등불 — '+(observation.ready[i]?'준비됨':'청소 중')));ruleNodes.forEach(node=>node.querySelector('b').textContent=duoText(ruleLabels[node.dataset.duoRule]+' → '+shapes[rules[node.dataset.duoRule]]));}
  byId('language').addEventListener('change',()=>{
   duoLanguage=byId('language').value==='en'?'en':'ko';clearRoleCard();room.lang=duoLanguage;
@@ -272,12 +282,12 @@
 // DUO-LANG-SCRIPT-END
  const card=byId('card'),cardOutput=byId('card-output'),cardField=byId('card-text'),cardSave=byId('card-save'),cardStatus=byId('card-status');
  const cardSession=Date.now().toString(36);let cardRound=1,cardTag='obs-'+cardSession+'-'+cardRound,cardUrl=null,cardClosed=false,cardVersion=0;
- function clearRoleCard(){cardVersion++;if(cardUrl){URL.revokeObjectURL(cardUrl);cardUrl=null;}cardField.value='';cardOutput.hidden=true;cardSave.hidden=true;cardSave.removeAttribute('href');cardSave.removeAttribute('download');cardStatus.textContent=duoText('');}
- function roleCardText(role,tag,obs,map){
+ function clearRoleCard(){/* DUO-RESTORE-INVALIDATE */invalidateRestore();cardVersion++;if(cardUrl){URL.revokeObjectURL(cardUrl);cardUrl=null;}cardField.value='';cardOutput.hidden=true;cardSave.hidden=true;cardSave.removeAttribute('href');cardSave.removeAttribute('download');cardStatus.textContent=duoText('');}
+ function roleCardText(role,tag,obs,map,language=duoLanguage){
   const title=role==='star'?'별지기':'기록지기';
   const head='두 관측자의 달 서고 · '+title+' 단서 카드\n관측 표시: '+tag+'\n관측 표시는 비교용이며 고유성·보안을 보장하지 않습니다.\n\n';
   const clues=role==='star'?'같은 세 색 순서가 반복됩니다. 다음 색을 관측하세요.\n'+obs.sequence.map(c=>colors[c]).join(' → ')+' → ?\n준비됨만 세세요. 장식 도형을 열쇠 도형으로 그대로 고르지 마세요.\n'+obs.ready.map((ready,i)=>(i+1)+'. '+shapes[lampShapes[i]]+' 등불 — '+(ready?'준비됨':'청소 중')).join('\n'):'별지기가 말한 준비된 등불 수를 아래 규칙으로 해석하세요.\n'+categories.map(k=>ruleLabels[k]+' → '+shapes[map[k]]).join('\n');
-  return duoText(head+clues+'\n\n두 카드의 관측 표시가 같은지 확인하세요. 새 관측에서는 두 카드 모두 다시 준비하세요. 저장·전달한 파일은 회수되지 않습니다. 최종 열쇠는 원래 진행 기기에서 함께 고르세요.\n');
+  return duoTextFor(head+clues+'\n\n두 카드의 관측 표시가 같은지 확인하세요. 새 관측에서는 두 카드 모두 다시 준비하세요. 저장·전달한 파일은 회수되지 않습니다. 최종 열쇠는 원래 진행 기기에서 함께 고르세요.\n',language);
  }
  function cardIsCurrent(version,role,tag){return !cardClosed&&cardVersion===version&&screen===role&&cardTag===tag;}
  byId('card-prepare').addEventListener('click',()=>{
@@ -293,6 +303,48 @@
  window.addEventListener('pagehide',()=>{cardClosed=true;clearRoleCard();card.hidden=true;});
  window.addEventListener('pageshow',event=>{if(event.persisted){cardClosed=false;card.hidden=screen!=='star'&&screen!=='record';}});
 // ROLE-CARD-SCRIPT-END
+// DUO-RESTORE-SCRIPT-BEGIN
+ const restoreFiles=byId('restore-files'),restoreStatus=byId('restore-status');
+ const initialRestore={observation:JSON.parse(JSON.stringify(observation)),rules:{...rules}};
+ const restoreCopy={
+  label:['저장한 역할 TXT 두 장 선택','Select two saved role TXT cards'],
+  help:['같은 관측 표시의 별지기·기록지기 TXT를 하나씩 선택하세요. KO/English 카드를 함께 사용할 수 있습니다. 파일당 4 KB까지이며 이 기기에서만 읽습니다. 복원 후 두 역할의 단서를 다시 읽어야 합니다. 저장·공유한 파일은 회수되지 않으며 관측 표시는 보안·고유성을 보장하지 않습니다.','Select one Lamp Observer and one Record Keeper TXT with matching observation labels. KO and English cards may be mixed. Each file must be at most 4 KB and is read only on this device. Read both roles again after restoring. Saved or shared files cannot be recalled; labels do not guarantee security or uniqueness.'],
+  apply:['두 카드로 관측 복원','Restore observation from two cards'],
+  error:['복원하지 못했습니다. 같은 관측 표시의 온전한 역할 TXT 두 장(각 4 KB 이하)을 확인하세요. 현재 진행은 유지됩니다.','Could not restore. Check two complete role TXT cards with matching labels (at most 4 KB each). Your current game is kept.'],
+  reading:['두 파일을 확인하고 있습니다.','Checking the two files.'],
+  success:['관측을 복원했습니다. 중립 화면에서 두 역할의 단서를 다시 읽으세요.','Observation restored. Read both role clues again from the neutral screen.']
+ };
+ let restoreEpoch=0,restoreMessage='';
+ function restoreLocalize(){const n=duoLanguage==='en'?1:0;for(const key of ['label','help','apply'])byId('restore-'+key).textContent=restoreCopy[key][n];restoreStatus.textContent=restoreMessage?restoreCopy[restoreMessage][n]:'';}
+ function restoreNotice(key){restoreMessage=key;restoreLocalize();}
+ function invalidateRestore(){restoreEpoch++;restoreMessage='';restoreLocalize();}
+ function normalizeCard(text){return text.replace(/^\uFEFF/,'').replace(/\r\n/g,'\n');}
+ function parseRestorePair(texts){
+  const cards=texts.map(text=>{text=normalizeCard(text);const match=text.match(/^(?:두 관측자의 달 서고 · (별지기|기록지기) 단서 카드\n관측 표시: |The Moon Archive: Two Observers · (Lamp Observer|Record Keeper) clue card\nObservation label: )(obs-[a-z0-9]{1,24}-[1-9][0-9]{0,9})\n/);if(!match)throw Error('template');return {text,role:match[1]==='별지기'||match[2]==='Lamp Observer'?'star':'record',language:match[1]?'ko':'en',tag:match[3]};});
+  if(cards[0].role===cards[1].role||cards[0].tag!==cards[1].tag)throw Error('pair');
+  const found=[initialRestore,...variants].find(candidate=>cards.every(c=>c.text===roleCardText(c.role,c.tag,candidate.observation,candidate.rules,c.language)));
+  if(!found)throw Error('values');
+  return {observation:{sequence:[...found.observation.sequence],ready:[...found.observation.ready]},rules:{...found.rules},tag:cards[0].tag};
+ }
+ restoreFiles.addEventListener('change',invalidateRestore);
+ inputs.forEach(input=>input.addEventListener('change',invalidateRestore));
+ byId('language').addEventListener('change',restoreLocalize);
+ byId('restore-apply').addEventListener('click',async()=>{
+  if(screen!=='neutral'||cardClosed)return;
+  const epoch=++restoreEpoch,version=cardVersion,files=[...restoreFiles.files];
+  const current=()=>restoreEpoch===epoch&&cardVersion===version&&screen==='neutral'&&!cardClosed;
+  if(files.length!==2||files.some(f=>!Number.isInteger(f.size)||f.size<1||f.size>4096)||files.reduce((n,f)=>n+f.size,0)>8192){restoreNotice('error');return;}
+  restoreNotice('reading');
+  try{
+   const texts=await Promise.all(files.map(f=>f.text()));if(!current())return;
+   if(texts.some(t=>new TextEncoder().encode(t).byteLength>4096))throw Error('size');
+   const restored=parseRestorePair(texts);if(!current())return;
+   observation=restored.observation;rules=restored.rules;cardTag=restored.tag;if(cardTag.startsWith('obs-'+cardSession+'-'))cardRound=Math.max(cardRound,Number(cardTag.split('-').pop()));answer=solve(observation,rules);render();
+   restart('두 역할의 단서를 나눠 읽고, 서로 알아낸 것을 말해 주세요.');restoreFiles.value='';restoreNotice('success');
+  }catch(error){if(current())restoreNotice('error');}
+ });
+ restoreLocalize();
+// DUO-RESTORE-SCRIPT-END
  function restart(message){seenStar=false;seenRecord=false;inputs.forEach(e=>e.checked=false);ending.hidden=true;show('neutral');status.textContent=duoText(message);}
  byId('new').addEventListener('click',()=>{
   const previous=answer,readyCount=observation.ready.filter(Boolean).length;
