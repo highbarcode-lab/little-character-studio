@@ -124,6 +124,18 @@
 <!-- DUO-LANG-STYLE-BEGIN -->
 <style>#moon-duo-language{max-width:100%;font:inherit;margin:8px 0 16px;padding:8px}#moon-duo [data-duo-i18n]{overflow-wrap:anywhere}</style>
 <!-- DUO-LANG-STYLE-END -->
+<!-- DUO-PRINT-STYLE-BEGIN -->
+<style>
+#moon-duo-print-sheet{display:none}#moon-duo-card-print{max-width:100%;white-space:normal;margin-top:12px}
+@page duo-role-card{size:auto;margin:16mm}
+@media print{
+ body.duo-role-print{margin:0!important;padding:0!important;background:#fff!important;color:#000!important}
+ body.duo-role-print>*:not(#moon-duo-print-sheet){display:none!important}
+ body.duo-role-print>#moon-duo-print-sheet{display:block!important;page:duo-role-card;width:auto;max-width:100%;margin:0;padding:0;background:#fff;color:#000;border:0}
+ #moon-duo-print-sheet pre{margin:0;font-family:Arial,"Malgun Gothic",sans-serif;font-size:12pt;line-height:1.35;white-space:pre-wrap;overflow-wrap:anywhere;word-break:normal;color:#000;background:#fff}
+}
+</style>
+<!-- DUO-PRINT-STYLE-END -->
 <!-- MOON-DUO-STYLE-END -->
 </head>
 <body>
@@ -195,7 +207,7 @@
         <p class="ko"><span data-duo-i18n="43">수와 짝짓기 규칙을 함께 해석하세요. 실제 등불 색과 준비된 수는 이 기록대에서 보이지 않습니다. 별지기에게 물어보세요.</span></p>
       </div>
 <!-- ROLE-CARD-ROOM-BEGIN -->
-      <div id="moon-duo-card" hidden><h3 id="moon-duo-card-heading"><span data-duo-i18n="44">현재 역할 단서 카드</span></h3><p><span data-duo-i18n="45">관측 표시가 같은 두 카드를 사용하세요. 새 관측에서는 두 카드 모두 다시 준비하세요. 이미 저장·전달한 파일은 회수되지 않습니다. 파일 전달은 직접 하며 자동 전송·동기화는 없습니다. 최종 열쇠 선택은 원래 진행 기기에서 하세요.</span></p><button class="btn" id="moon-duo-card-prepare" type="button"><span data-duo-i18n="46">역할 단서 카드 준비</span></button><div id="moon-duo-card-output" hidden><label for="moon-duo-card-text"><span data-duo-i18n="47">현재 역할의 단서 · 읽기 전용 텍스트</span></label><textarea id="moon-duo-card-text" readonly rows="10" spellcheck="false"></textarea><a class="btn" id="moon-duo-card-save" hidden><span data-duo-i18n="48">역할 TXT 직접 저장</span></a></div><p id="moon-duo-card-status" role="status" aria-live="polite"></p></div>
+      <div id="moon-duo-card" hidden><h3 id="moon-duo-card-heading"><span data-duo-i18n="44">현재 역할 단서 카드</span></h3><p><span data-duo-i18n="45">관측 표시가 같은 두 카드를 사용하세요. 새 관측에서는 두 카드 모두 다시 준비하세요. 이미 저장·전달한 파일은 회수되지 않습니다. 파일 전달은 직접 하며 자동 전송·동기화는 없습니다. 최종 열쇠 선택은 원래 진행 기기에서 하세요.</span></p><button class="btn" id="moon-duo-card-prepare" type="button"><span data-duo-i18n="46">역할 단서 카드 준비</span></button><div id="moon-duo-card-output" hidden><label for="moon-duo-card-text"><span data-duo-i18n="47">현재 역할의 단서 · 읽기 전용 텍스트</span></label><textarea id="moon-duo-card-text" readonly rows="10" spellcheck="false"></textarea><a class="btn" id="moon-duo-card-save" hidden><span data-duo-i18n="48">역할 TXT 직접 저장</span></a><!-- DUO-PRINT-UI-BEGIN --><p id="moon-duo-card-print-help">위 카드의 역할·관측 표시·단서를 확인한 뒤 이 카드만 인쇄하세요. 인쇄 요청은 출력 완료를 뜻하지 않으며, 종이는 회수되지 않습니다.</p><button class="btn" type="button" id="moon-duo-card-print">이 역할 카드 인쇄</button><p id="moon-duo-card-print-status" role="status" aria-live="polite"></p><!-- DUO-PRINT-UI-END --></div><p id="moon-duo-card-status" role="status" aria-live="polite"></p></div>
 <!-- ROLE-CARD-ROOM-END -->
       <button class="btn" id="moon-duo-handoff" type="button" hidden><span data-duo-i18n="49">단서 가리고 기기 건네기</span></button>
       <div id="moon-duo-table-panel" hidden>
@@ -282,7 +294,26 @@
 // DUO-LANG-SCRIPT-END
  const card=byId('card'),cardOutput=byId('card-output'),cardField=byId('card-text'),cardSave=byId('card-save'),cardStatus=byId('card-status');
  const cardSession=Date.now().toString(36);let cardRound=1,cardTag='obs-'+cardSession+'-'+cardRound,cardUrl=null,cardClosed=false,cardVersion=0;
- function clearRoleCard(){/* DUO-RESTORE-INVALIDATE */invalidateRestore();cardVersion++;if(cardUrl){URL.revokeObjectURL(cardUrl);cardUrl=null;}cardField.value='';cardOutput.hidden=true;cardSave.hidden=true;cardSave.removeAttribute('href');cardSave.removeAttribute('download');cardStatus.textContent=duoText('');}
+// DUO-PRINT-SCRIPT-BEGIN
+ let printReady=null;
+ const printSheet=document.createElement('section'),printText=document.createElement('pre');
+ printSheet.id='moon-duo-print-sheet';printSheet.setAttribute('aria-hidden','true');printSheet.appendChild(printText);document.body.appendChild(printSheet);
+ const printCopy={button:['이 역할 카드 인쇄','Print this role card'],help:['위 카드의 역할·관측 표시·단서를 확인한 뒤 이 카드만 인쇄하세요. 인쇄 요청은 출력 완료를 뜻하지 않으며, 종이는 회수되지 않습니다.','Confirm the role, observation label and clues above, then print only this card. A print request does not confirm output. Printed cards cannot be recalled.'],requested:['인쇄를 요청했습니다. 대화상자에서 출력·취소를 선택하세요. 실제 출력 완료는 직접 확인하세요.','Print requested. Choose print or cancel in the dialog. Check actual output yourself.'],error:['인쇄 대화상자를 열지 못했습니다. 현재 게임과 TXT는 유지됩니다. 다시 인쇄하거나 위 텍스트를 직접 사용하세요.','Could not open the print dialog. Your game and TXT are kept. Try printing again or use the text above.']};
+ let printMessage='';
+ function printLocalize(){const n=duoLanguage==='en'?1:0;byId('card-print').textContent=printCopy.button[n];byId('card-print-help').textContent=printCopy.help[n];byId('card-print-status').textContent=printMessage?printCopy[printMessage][n]:'';}
+ function clearPrintView(){document.body.classList.remove('duo-role-print');printText.textContent='';printSheet.removeAttribute('lang');}
+ function printIsCurrent(prepared){return prepared&&!cardClosed&&prepared.version===cardVersion&&prepared.role===screen&&prepared.tag===cardTag&&prepared.language===duoLanguage&&prepared.text===cardField.value&&!cardOutput.hidden;}
+ byId('card-print').addEventListener('click',()=>{
+  const prepared=printReady;if(!printIsCurrent(prepared))return;
+  printText.textContent=prepared.text;printSheet.lang=prepared.language;document.body.classList.add('duo-role-print');
+  try{window.print();printMessage='requested';}catch(error){printMessage='error';}finally{clearPrintView();printLocalize();}
+ });
+ window.addEventListener('beforeprint',()=>{if(document.body.classList.contains('duo-role-print')&&!printIsCurrent(printReady))clearPrintView();});
+ window.addEventListener('afterprint',clearPrintView);
+ byId('language').addEventListener('change',printLocalize);
+ printLocalize();
+// DUO-PRINT-SCRIPT-END
+ function clearRoleCard(){/* DUO-PRINT-CLEAR */printReady=null;printMessage='';clearPrintView();printLocalize();/* DUO-RESTORE-INVALIDATE */invalidateRestore();cardVersion++;if(cardUrl){URL.revokeObjectURL(cardUrl);cardUrl=null;}cardField.value='';cardOutput.hidden=true;cardSave.hidden=true;cardSave.removeAttribute('href');cardSave.removeAttribute('download');cardStatus.textContent=duoText('');}
  function roleCardText(role,tag,obs,map,language=duoLanguage){
   const title=role==='star'?'별지기':'기록지기';
   const head='두 관측자의 달 서고 · '+title+' 단서 카드\n관측 표시: '+tag+'\n관측 표시는 비교용이며 고유성·보안을 보장하지 않습니다.\n\n';
@@ -294,7 +325,7 @@
   if(cardClosed||(screen!=='star'&&screen!=='record'))return;
   clearRoleCard();const version=cardVersion,role=screen,tag=cardTag,text=roleCardText(role,tag,observation,rules);
   if(new TextEncoder().encode(text).byteLength>4096){cardStatus.textContent=duoText('카드가 너무 큽니다. 파일을 준비하지 않았습니다.');return;}
-  cardField.value=text;cardOutput.hidden=false;let url;
+  cardField.value=text;cardOutput.hidden=false;/* DUO-PRINT-PREPARE */printReady={version,role,tag,language:duoLanguage,text};let url;
   try{url=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));}
   catch(error){if(cardIsCurrent(version,role,tag))cardStatus.textContent=duoText('TXT 파일을 준비하지 못했습니다. 위 읽기 전용 텍스트를 선택해 직접 복사하세요.');return;}
   if(!cardIsCurrent(version,role,tag)){URL.revokeObjectURL(url);return;}
