@@ -25,6 +25,7 @@
       'Permission to share supplied materials: confirmed by the person preparing this brief',
       '',
       'Proposed service: one character direction, three expression PNGs, one 10–15 second silent vertical illustrated cut-motion MP4, one thumbnail PNG, and one minor revision.',
+      'Revision scope: one round of cut selection, shot duration and transition timing using agreed existing illustrations. New artwork, color or expression redraws and new scenes are excluded.',
       'Proposed Fiverr test price: US$150. Proposed timing: 7 calendar days after complete requirements, subject to the live order timer and confirmed scope.',
       'AI-assisted images are part of the process. No lip-sync, fluid animation, vector logo, exclusive rights guarantee, or trademark clearance is included.',
       '',
